@@ -1,5 +1,6 @@
 import { api } from '@/lib/axios';
 import { stripServerFields } from '@/lib/utils';
+import { SOCIAL_LINKS } from '@/constants/socials';
 import type { ApiResponse, PaginatedResponse } from '@/types/api.types';
 import type {
   Banner, BannerInput, Testimonial, TestimonialInput, FaqCategory, FaqArticle,
@@ -48,16 +49,19 @@ export const deleteFaqArticle = async (id: string): Promise<void> => { await api
 type FlatSiteSettings = SiteSetting & {
   facebook?: string; instagram?: string; twitter?: string; youtube?: string; linkedin?: string;
 };
+/** Treat legacy seed placeholders as unset so the real profiles always show. */
+const realLink = (value: string | undefined, fallback = ''): string =>
+  value && !/vehiclemarket/i.test(value) ? value : fallback;
+
 export const getSiteSettings = async (): Promise<SiteSetting> => {
   const s = (await api.get<ApiResponse<FlatSiteSettings>>('/content/site-settings')).data.data;
   return {
     ...s,
     social: {
-      facebook: s.facebook ?? s.social?.facebook,
-      instagram: s.instagram ?? s.social?.instagram,
-      twitter: s.twitter ?? s.social?.twitter,
-      youtube: s.youtube ?? s.social?.youtube,
-      linkedin: s.linkedin ?? s.social?.linkedin,
+      facebook: realLink(s.facebook ?? s.social?.facebook, SOCIAL_LINKS.facebook),
+      instagram: realLink(s.instagram ?? s.social?.instagram, SOCIAL_LINKS.instagram),
+      youtube: realLink(s.youtube ?? s.social?.youtube, SOCIAL_LINKS.youtube),
+      linkedin: realLink(s.linkedin ?? s.social?.linkedin, SOCIAL_LINKS.linkedin),
     },
   };
 };

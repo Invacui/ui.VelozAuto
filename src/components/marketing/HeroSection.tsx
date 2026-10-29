@@ -1,10 +1,11 @@
 import { useRef } from 'react';
-import { ArrowDown, Facebook, Twitter, Instagram } from 'lucide-react';
+import { ArrowDown, Facebook, Instagram, Linkedin } from 'lucide-react';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { SearchBox } from '@/components/marketing/SearchBox';
 import { CONTACT_PHONE, CONTACT_PHONE_HREF } from '@/lib/seo';
+import { SOCIAL_LINKS } from '@/constants/socials';
 import carImage from '@/assets/hero_car.webp';
 
 gsap.registerPlugin(useGSAP, ScrollTrigger);
@@ -90,14 +91,29 @@ export function HeroSection() {
           <line x1="0" y1="2" x2="96" y2="2" stroke="#9ca3af" strokeWidth="2" strokeDasharray="48 5 16 5 10 4 6 3 3 2 1" />
         </svg>
         <div className="pointer-events-auto absolute bottom-32 left-0 flex flex-col items-center gap-4">
-          <a href="#" aria-label="Facebook" className="text-gray-400 hover:text-primary">
+          <a
+            href={SOCIAL_LINKS.facebook}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Facebook"
+            className="text-gray-400 hover:text-primary">
             <Facebook className="h-5 w-8 rounded-full border-2 border-gray-400 p-0.5" />
           </a>
-          <a href="#" aria-label="Twitter" className="text-gray-400 hover:text-primary">
-            <Twitter className="h-5 w-8 rounded-full border-2 border-gray-400 p-0.5" />
-          </a>
-          <a href="#" aria-label="Instagram" className="text-gray-400 hover:text-primary">
+          <a
+            href={SOCIAL_LINKS.instagram}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Instagram"
+            className="text-gray-400 hover:text-primary">
             <Instagram className="h-5 w-8 rounded-full border-2 border-gray-400 p-0.5" />
+          </a>
+          <a
+            href={SOCIAL_LINKS.linkedin}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="LinkedIn"
+            className="text-gray-400 hover:text-primary">
+            <Linkedin className="h-5 w-8 rounded-full border-2 border-gray-400 p-0.5" />
           </a>
         </div>
       </div>
@@ -110,10 +126,10 @@ export function HeroSection() {
 
         {CONTACT_PHONE && (
           <div className="absolute -top-10  cursor-pointer sm:z-20 right-7 r">
-            <hr className="h-36 sm:h-24 w- ml-0.5  sm:bg-gray-400/60 hover:bg-primary/10 cursor-pointer " />
+            <hr className="h-36 sm:h-24 w- ml-0.5  sm:bg-primary/10 hover:bg-primary/10 cursor-pointer " />
             <a
               href={CONTACT_PHONE_HREF}
-              className="cursor-pointer font-Incompleeta  text-sm tracking-widest text-gray-400 hover:text-blue-500"
+              className="cursor-pointer font-Incompleeta  text-sm tracking-widest text-primary/60 hover:text-blue-500"
             >
               {CONTACT_PHONE}
             </a>

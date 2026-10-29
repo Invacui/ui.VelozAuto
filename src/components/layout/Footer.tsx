@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
-import { Facebook, Instagram, Twitter, Youtube, Phone, Mail, MapPin } from 'lucide-react';
+import { Facebook, Instagram, Linkedin, Youtube, Phone, Mail, MapPin } from 'lucide-react';
 import { getSiteSettings } from '@/services/content.service';
 import { queryKeys } from '@/lib/queryKeys';
 import { ROUTES } from '@/constants/routes';
@@ -80,9 +80,9 @@ export function Footer() {
                   <Instagram className="h-5 w-5" />
                 </a>
               )}
-              {social.twitter && (
-                <a href={social.twitter} target="_blank" rel="noreferrer" aria-label="Twitter" className="text-gray-400 hover:text-white">
-                  <Twitter className="h-5 w-5" />
+              {social.linkedin && (
+                <a href={social.linkedin} target="_blank" rel="noreferrer" aria-label="LinkedIn" className="text-gray-400 hover:text-white">
+                  <Linkedin className="h-5 w-5" />
                 </a>
               )}
               {social.youtube && (

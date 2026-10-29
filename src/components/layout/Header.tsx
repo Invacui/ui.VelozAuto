@@ -17,7 +17,7 @@ import {
   MapPin,
   Facebook,
   Instagram,
-  Twitter,
+  Linkedin,
   Youtube,
 } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
@@ -346,13 +346,13 @@ export function Header() {
                     <Facebook className="h-12 w-12 rounded-full border p-2 text-white/60 transition-colors hover:text-primary" />
                   </a>
                 )}
-                {social.twitter && (
+                {social.linkedin && (
                   <a
-                    href={social.twitter}
+                    href={social.linkedin}
                     target="_blank"
                     rel="noopener noreferrer"
-                    aria-label="Twitter">
-                    <Twitter className="h-12 w-12 rounded-full border p-2 text-white/60 transition-colors hover:text-primary" />
+                    aria-label="LinkedIn">
+                    <Linkedin className="h-12 w-12 rounded-full border p-2 text-white/60 transition-colors hover:text-primary" />
                   </a>
                 )}
                 {social.instagram && (

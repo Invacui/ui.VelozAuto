@@ -60,7 +60,7 @@ export function ChatWidget() {
       </button>
 
       {open && (
-        <div className="fixed bottom-24 right-5 z-50 flex h-[32rem] w-[22rem] flex-col overflow-hidden rounded-xl border bg-background shadow-2xl">
+        <div className="fixed bottom-36 right-5 z-50 flex h-[32rem] max-h-[calc(100dvh-10rem)] w-[22rem] max-w-[calc(100vw-2.5rem)] flex-col overflow-hidden rounded-xl border bg-background shadow-2xl">
           {!isAuthenticated ? (
             <div className="flex flex-1 flex-col items-center justify-center gap-3 p-6 text-center">
               <MessageCircle className="h-8 w-8 text-primary" />

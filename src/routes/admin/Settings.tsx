@@ -17,7 +17,7 @@ import type { SiteSetting } from '@/types/content.types';
 const EMPTY: SiteSetting = {
   siteName: 'Veloz Auto',
   tagline: '', phone: '', email: '', address: '', whatsapp: '', footerText: '', workingHours: '',
-  social: { facebook: '', instagram: '', twitter: '', youtube: '' },
+  social: { facebook: '', instagram: '', linkedin: '', youtube: '' },
   defaultMeta: { title: '', description: '', image: '' },
 };
 
@@ -79,7 +79,7 @@ export default function AdminSettings() {
           <CardContent className="grid gap-4 sm:grid-cols-2">
             <div className="space-y-1.5"><Label className="text-xs">Facebook</Label><Input value={form.social?.facebook || ''} onChange={(e) => setSocial({ facebook: e.target.value })} /></div>
             <div className="space-y-1.5"><Label className="text-xs">Instagram</Label><Input value={form.social?.instagram || ''} onChange={(e) => setSocial({ instagram: e.target.value })} /></div>
-            <div className="space-y-1.5"><Label className="text-xs">Twitter / X</Label><Input value={form.social?.twitter || ''} onChange={(e) => setSocial({ twitter: e.target.value })} /></div>
+            <div className="space-y-1.5"><Label className="text-xs">LinkedIn</Label><Input value={form.social?.linkedin || ''} onChange={(e) => setSocial({ linkedin: e.target.value })} /></div>
             <div className="space-y-1.5"><Label className="text-xs">YouTube</Label><Input value={form.social?.youtube || ''} onChange={(e) => setSocial({ youtube: e.target.value })} /></div>
           </CardContent>
         </Card>

@@ -2,6 +2,7 @@ import { Outlet } from 'react-router-dom';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { ChatWidget } from '@/components/chat/ChatWidget';
+import { WhatsAppButton } from '@/components/chat/WhatsAppButton';
 import { ScrollToTop } from '@/components/common/ScrollToTop';
 import { SmoothScroll } from '@/components/common/SmoothScroll';
 import { PhoneVerificationDialog } from '@/components/auth/PhoneVerificationDialog';
@@ -18,6 +19,7 @@ export function MarketingLayout() {
         </main>
         <Footer />
         <ChatWidget />
+        <WhatsAppButton />
         <PhoneVerificationDialog />
       </div>
     </SmoothScroll>
