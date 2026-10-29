@@ -1,7 +1,7 @@
 import { Outlet } from 'react-router-dom';
 import {
   LayoutDashboard, Car, ShoppingBag, BadgeIndianRupee, Database, Users,
-  MessagesSquare, Image, Quote, HelpCircle, Search, Mail, Settings,
+  MessagesSquare, Image, Quote, HelpCircle, Search, Mail, Scale, Settings,
 } from 'lucide-react';
 import { DashboardSidebar, type SidebarNavItem } from '@/components/layout/DashboardSidebar';
 import { DashboardTopbar } from '@/components/layout/DashboardTopbar';
@@ -26,6 +26,7 @@ const bottomNavItems: SidebarNavItem[] = [
   { to: ROUTES.admin.faq, icon: HelpCircle, label: 'FAQ' },
   { to: ROUTES.admin.seo, icon: Search, label: 'SEO' },
   { to: ROUTES.admin.contacts, icon: Mail, label: 'Contacts' },
+  { to: ROUTES.admin.legal, icon: Scale, label: 'Legal pages' },
   { to: ROUTES.admin.settings, icon: Settings, label: 'Settings' },
 ];
 

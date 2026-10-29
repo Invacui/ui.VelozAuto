@@ -1,12 +1,26 @@
-import { LegalPage } from '@/components/marketing/LegalPage';
+import { useQuery } from '@tanstack/react-query';
+import { LegalMarkdown, LegalPage, formatLegalDate } from '@/components/marketing/LegalPage';
+import { getSiteSettings } from '@/services/content.service';
+import { queryKeys } from '@/lib/queryKeys';
 
 export default function Terms() {
+  const { data: settings } = useQuery({
+    queryKey: queryKeys.content.siteSettings(),
+    queryFn: getSiteSettings,
+    staleTime: 10 * 60_000,
+  });
+  const content = settings?.termsContent?.trim();
+
   return (
     <LegalPage
       title="Terms & Conditions"
-      meta="Last updated: 10 October 2026"
+      meta={formatLegalDate(settings?.legalUpdatedAt) ?? 'Last updated: 10 October 2026'}
       description="The terms governing your use of the Veloz Auto used-vehicle marketplace."
     >
+      {content ? (
+        <LegalMarkdown content={content} />
+      ) : (
+      <>
       <section>
         <h2>1. Acceptance of terms</h2>
         <p>
@@ -72,6 +86,8 @@ export default function Terms() {
         <h2>8. Governing law</h2>
         <p>These terms are governed by the laws of India, and disputes are subject to Indian jurisdiction.</p>
       </section>
+      </>
+      )}
     </LegalPage>
   );
 }

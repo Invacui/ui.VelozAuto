@@ -1,13 +1,27 @@
-import { LegalPage } from '@/components/marketing/LegalPage';
+import { useQuery } from '@tanstack/react-query';
+import { LegalMarkdown, LegalPage, formatLegalDate } from '@/components/marketing/LegalPage';
 import { PRIVACY_EMAIL } from '@/lib/seo';
+import { getSiteSettings } from '@/services/content.service';
+import { queryKeys } from '@/lib/queryKeys';
 
 export default function Privacy() {
+  const { data: settings } = useQuery({
+    queryKey: queryKeys.content.siteSettings(),
+    queryFn: getSiteSettings,
+    staleTime: 10 * 60_000,
+  });
+  const content = settings?.privacyContent?.trim();
+
   return (
     <LegalPage
       title="Privacy Policy"
-      meta="Last updated: 10 October 2026"
+      meta={formatLegalDate(settings?.legalUpdatedAt) ?? 'Last updated: 10 October 2026'}
       description="How Veloz Auto collects, uses and protects your personal data across buying and selling used vehicles."
     >
+      {content ? (
+        <LegalMarkdown content={content} />
+      ) : (
+      <>
       <section>
         <h2>1. Who we are</h2>
         <p>
@@ -77,6 +91,8 @@ export default function Privacy() {
           </p>
         )}
       </section>
+      </>
+      )}
     </LegalPage>
   );
 }

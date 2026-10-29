@@ -23,7 +23,11 @@ export function PhoneVerificationDialog() {
   const [devCode, setDevCode] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
-  const open = Boolean(isAuthenticated && user?.role === 'USER' && !user.phoneVerified);
+  // Kept behind a flag until the Meta WhatsApp integration ships.
+  const verificationEnabled = import.meta.env.APP_PHONE_VERIFICATION_ENABLED === 'true';
+  const open = Boolean(
+    verificationEnabled && isAuthenticated && user?.role === 'USER' && !user.phoneVerified
+  );
 
   useEffect(() => {
     setPhone(user?.phone ?? '');

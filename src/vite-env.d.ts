@@ -10,6 +10,7 @@ interface ImportMetaEnv {
   readonly APP_PRIVACY_EMAIL?: string;
   readonly APP_TWITTER_HANDLE?: string;
   readonly APP_WHATSAPP_NUMBER?: string;
+  readonly APP_PHONE_VERIFICATION_ENABLED?: string;
 }
 
 interface ImportMeta {

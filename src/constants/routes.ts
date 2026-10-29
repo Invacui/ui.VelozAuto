@@ -43,6 +43,7 @@ export const ROUTES = {
     faq: '/admin/faq',
     seo: '/admin/seo',
     contacts: '/admin/contacts',
+    legal: '/admin/legal',
     settings: '/admin/settings',
   },
 } as const;

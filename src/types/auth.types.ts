@@ -15,6 +15,7 @@ export interface User {
 export interface LoginDto {
   email: string;
   password: string;
+  phone?: string;
 }
 
 export interface RegisterDto {

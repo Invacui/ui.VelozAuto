@@ -54,6 +54,7 @@ const AdminTestimonials = lazy(() => import('@/routes/admin/Testimonials'));
 const AdminFaq = lazy(() => import('@/routes/admin/Faq'));
 const AdminSeo = lazy(() => import('@/routes/admin/Seo'));
 const AdminContacts = lazy(() => import('@/routes/admin/Contacts'));
+const AdminLegal = lazy(() => import('@/routes/admin/Legal'));
 const AdminSettings = lazy(() => import('@/routes/admin/Settings'));
 
 const NotFound = lazy(() => import('@/routes/NotFound'));
@@ -121,6 +122,7 @@ export const router = createBrowserRouter([
       { path: 'faq', element: withSuspense(<AdminFaq />) },
       { path: 'seo', element: withSuspense(<AdminSeo />) },
       { path: 'contacts', element: withSuspense(<AdminContacts />) },
+      { path: 'legal', element: withSuspense(<AdminLegal />) },
       { path: 'settings', element: withSuspense(<AdminSettings />) },
     ],
   },

@@ -1,3 +1,4 @@
+import ReactMarkdown from 'react-markdown';
 import { SEO } from '@/components/common/SEO';
 
 interface LegalPageProps {
@@ -6,6 +7,22 @@ interface LegalPageProps {
   description: string;
   children: React.ReactNode;
 }
+
+/** Renders admin-authored Markdown with the legal page typography. */
+export function LegalMarkdown({ content }: { content: string }) {
+  return <ReactMarkdown>{content}</ReactMarkdown>;
+}
+
+export const formatLegalDate = (value?: string | null): string | undefined => {
+  if (!value) return undefined;
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return undefined;
+  return `Last updated: ${date.toLocaleDateString('en-IN', {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric',
+  })}`;
+};
 
 /** Shared shell for static legal / informational pages. */
 export function LegalPage({ title, meta, description, children }: LegalPageProps) {

@@ -38,6 +38,7 @@ const adminTabs: TabItem[] = [
         '/admin/faq',
         '/admin/seo',
         '/admin/contacts',
+        '/admin/legal',
         '/admin/settings',
       ].some((x) => p.startsWith(x)),
   },

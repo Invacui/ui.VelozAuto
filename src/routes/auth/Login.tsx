@@ -16,10 +16,12 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { getApiErrorMessage } from '@/lib/utils';
+import { phoneSchema } from '@/lib/validations';
 import { roleHome } from '@/guards/AuthGuard';
 
 const loginSchema = z.object({
   email: z.string().trim().email('Enter a valid email address'),
+  phone: phoneSchema,
   password: z.string().min(6, 'Password must be at least 6 characters'),
 });
 
@@ -69,6 +71,21 @@ export default function Login() {
           <Label htmlFor="email">Email</Label>
           <Input id="email" type="email" placeholder="you@example.com" className="mt-1.5 h-10" {...register('email')} />
           {errors.email && <p className="mt-1 text-xs text-destructive">{errors.email.message}</p>}
+        </div>
+
+        <div>
+          <Label htmlFor="phone">Mobile number</Label>
+          <Input
+            id="phone"
+            type="tel"
+            inputMode="numeric"
+            autoComplete="tel"
+            maxLength={10}
+            placeholder="9876543210"
+            className="mt-1.5 h-10"
+            {...register('phone')}
+          />
+          {errors.phone && <p className="mt-1 text-xs text-destructive">{errors.phone.message}</p>}
         </div>
 
         <div>

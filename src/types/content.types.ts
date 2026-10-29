@@ -94,6 +94,9 @@ export interface SiteSetting {
   defaultMeta?: { title?: string; description?: string; image?: string };
   footerText?: string;
   workingHours?: string;
+  termsContent?: string;
+  privacyContent?: string;
+  legalUpdatedAt?: string | null;
 }
 
 export type SiteSettingInput = Partial<SiteSetting>;
