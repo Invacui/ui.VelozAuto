@@ -1,0 +1,6 @@
+import{c as l,j as e}from"./index-CDiQs5dX.js";/**
+ * @license lucide-react v0.454.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */const m=l("PackageOpen",[["path",{d:"M12 22v-9",key:"x3hkom"}],["path",{d:"M15.17 2.21a1.67 1.67 0 0 1 1.63 0L21 4.57a1.93 1.93 0 0 1 0 3.36L8.82 14.79a1.655 1.655 0 0 1-1.64 0L3 12.43a1.93 1.93 0 0 1 0-3.36z",key:"2ntwy6"}],["path",{d:"M20 13v3.87a2.06 2.06 0 0 1-1.11 1.83l-6 3.08a1.93 1.93 0 0 1-1.78 0l-6-3.08A2.06 2.06 0 0 1 4 16.87V13",key:"1pmm1c"}],["path",{d:"M21 12.43a1.93 1.93 0 0 0 0-3.36L8.83 2.2a1.64 1.64 0 0 0-1.63 0L3 4.57a1.93 1.93 0 0 0 0 3.36l12.18 6.86a1.636 1.636 0 0 0 1.63 0z",key:"12ttoo"}]]);function x({title:s,description:a,icon:c,action:t}){return e.jsxs("div",{className:"flex flex-col items-center justify-center py-12 text-center",children:[e.jsx("div",{className:"mb-4 rounded-full bg-gray-100 p-3",children:c||e.jsx(m,{className:"h-6 w-6 text-gray-400"})}),e.jsx("h3",{className:"text-lg font-medium text-gray-900",children:s}),a&&e.jsx("p",{className:"mt-1 text-sm text-gray-500",children:a}),t&&e.jsx("div",{className:"mt-4",children:t})]})}export{x as E};

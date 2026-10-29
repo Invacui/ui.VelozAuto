@@ -1,0 +1,1 @@
+import{aB as t}from"./index-CDiQs5dX.js";const u=async a=>(await t.post("/buy-requests",a)).data.data,y=async(a={})=>(await t.get("/buy-requests",{params:a})).data,c=async(a={})=>(await t.get("/buy-requests/mine",{params:a})).data,n=async(a,s)=>(await t.patch(`/buy-requests/${a}`,s)).data.data;export{u as c,c as g,y as l,n as u};

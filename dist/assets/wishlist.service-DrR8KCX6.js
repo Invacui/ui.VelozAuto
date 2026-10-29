@@ -1,0 +1,1 @@
+import{aB as a}from"./index-CDiQs5dX.js";const i=async(s={})=>(await a.get("/wishlist",{params:s})).data,o=async s=>{await a.post(`/wishlist/${s}`)},e=async s=>{await a.delete(`/wishlist/${s}`)};export{o as a,i as g,e as r};

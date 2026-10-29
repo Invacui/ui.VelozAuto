@@ -1,0 +1,1 @@
+import{r as e}from"./index-CDiQs5dX.js";function i({mode:r="signin",disabled:o=!1,onCredential:t}){const s="";e.useRef(null);const n=e.useRef(t),[u,l]=e.useState(null),[a,c]=e.useState(!1);return n.current=t,e.useEffect(()=>{},[s,r]),null}export{i as G};

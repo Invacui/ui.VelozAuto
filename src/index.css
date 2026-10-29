@@ -1,0 +1,142 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: 'Incompleeta';
+  src: url('./assets/IncompleetaRegular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 240 6% 10%;
+    --card: 0 0% 100%;
+    --card-foreground: 240 6% 10%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 240 6% 10%;
+    --primary: 211 100% 50%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 221 40% 96%;
+    --secondary-foreground: 221 30% 20%;
+    --muted: 221 30% 96%;
+    --muted-foreground: 221 12% 46%;
+    --accent: 221 40% 96%;
+    --accent-foreground: 221 30% 20%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 221 20% 91%;
+    --input: 221 20% 91%;
+    --ring: 211 100% 50%;
+    --radius: 0.5rem;
+    --success: 142 71% 45%;
+    --success-foreground: 0 0% 100%;
+    --warning: 35 90% 50%;
+    --warning-foreground: 0 0% 100%;
+  }
+
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-family: 'Roboto', 'Inter', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-semibold tracking-tight;
+  }
+}
+
+@layer components {
+  .marquee-logos {
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    width: 100%;
+  }
+
+  .marquee-logos__container {
+    display: flex;
+    align-items: center;
+    gap: 2.5rem;
+    padding-right: 2.5rem;
+    flex-shrink: 0;
+    will-change: transform;
+    animation: marquee-logos-scroll 35s linear infinite;
+  }
+
+  .marquee-logos__item {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.625rem;
+    white-space: nowrap;
+    font-size: 1rem;
+    font-weight: 600;
+    line-height: 1;
+    color: hsl(var(--foreground));
+    transition: color 0.2s;
+  }
+
+  .marquee-logos__item:hover {
+    color: hsl(var(--primary));
+  }
+
+  .marquee-logos__logo {
+    height: 2.25rem;
+    width: auto;
+    max-width: 4.5rem;
+    object-fit: contain;
+  }
+
+  .marquee-logos__fade {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 80px;
+    pointer-events: none;
+    z-index: 2;
+  }
+
+  .marquee-logos__fade-left {
+    left: 0;
+    background: linear-gradient(to right, hsl(var(--background)), transparent);
+  }
+
+  .marquee-logos__fade-right {
+    right: 0;
+    background: linear-gradient(to left, hsl(var(--background)), transparent);
+  }
+}
+
+@keyframes marquee-logos-scroll {
+  from { transform: translateX(0); }
+  to { transform: translateX(-100%); }
+}
+
+@layer utilities {
+  .scrollbar-thin {
+    scrollbar-width: thin;
+    scrollbar-color: hsl(var(--border)) transparent;
+  }
+  .scrollbar-thin::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  .scrollbar-thin::-webkit-scrollbar-thumb {
+    background-color: hsl(var(--border));
+    border-radius: 3px;
+  }
+  .scrollbar-none {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .scrollbar-none::-webkit-scrollbar {
+    display: none;
+  }
+}
