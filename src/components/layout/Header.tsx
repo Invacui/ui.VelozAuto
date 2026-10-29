@@ -434,7 +434,7 @@ export function Header() {
                     Head Office
                   </h6>
                   <p className="text-sm leading-relaxed text-white/60">
-                    {settings?.address || "Chennai, Tamil Nadu, India"}
+                    {settings?.address || "Moosapet, Hyderabad, Telangana, India"}
                   </p>
                 </div>
                 <div>
