@@ -20,8 +20,14 @@ import { phoneSchema } from '@/lib/validations';
 import { roleHome } from '@/guards/AuthGuard';
 
 const loginSchema = z.object({
-  email: z.string().trim().email('Enter a valid email address'),
-  phone: phoneSchema,
+  identifier: z
+    .string()
+    .trim()
+    .min(1, 'Enter your email or mobile number')
+    .refine(
+      (value) => phoneSchema.safeParse(value).success || z.string().email().safeParse(value).success,
+      'Enter a valid email or 10-digit mobile number'
+    ),
   password: z.string().min(6, 'Password must be at least 6 characters'),
 });
 
@@ -66,26 +72,29 @@ export default function Login() {
       <h2 className="text-xl font-semibold tracking-tight">Welcome back</h2>
       <p className="mt-1 text-sm text-muted-foreground">Sign in to your account to continue</p>
 
-      <form onSubmit={handleSubmit((d) => mutate(d as LoginDto))} className="mt-6 space-y-4">
+      <form
+        onSubmit={handleSubmit((d) => {
+          const isEmail = d.identifier.includes('@');
+          const payload: LoginDto = {
+            password: d.password,
+            ...(isEmail ? { email: d.identifier } : { phone: d.identifier }),
+          };
+          mutate(payload);
+        })}
+        className="mt-6 space-y-4"
+      >
         <div>
-          <Label htmlFor="email">Email</Label>
-          <Input id="email" type="email" placeholder="you@example.com" className="mt-1.5 h-10" {...register('email')} />
-          {errors.email && <p className="mt-1 text-xs text-destructive">{errors.email.message}</p>}
-        </div>
-
-        <div>
-          <Label htmlFor="phone">Mobile number</Label>
+          <Label htmlFor="identifier">Email or mobile number</Label>
           <Input
-            id="phone"
-            type="tel"
-            inputMode="numeric"
-            autoComplete="tel"
-            maxLength={10}
-            placeholder="9876543210"
+            id="identifier"
+            type="text"
+            inputMode="email"
+            autoComplete="username"
+            placeholder="you@example.com or 9876543210"
             className="mt-1.5 h-10"
-            {...register('phone')}
+            {...register('identifier')}
           />
-          {errors.phone && <p className="mt-1 text-xs text-destructive">{errors.phone.message}</p>}
+          {errors.identifier && <p className="mt-1 text-xs text-destructive">{errors.identifier.message}</p>}
         </div>
 
         <div>
@@ -116,7 +125,7 @@ export default function Login() {
         </div>
 
         <Button type="submit" size="lg" className="h-10 w-full" disabled={isPending || isGooglePending}>
-          {isPending ? <><Loader2 className="h-4 w-4 animate-spin" /> Signing in�?�</> : 'Sign in'}
+          {isPending ? <><Loader2 className="h-4 w-4 animate-spin" /> Signing in…</> : 'Sign in'}
         </Button>
       </form>
 
