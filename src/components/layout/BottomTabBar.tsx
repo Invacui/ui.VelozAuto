@@ -1,6 +1,7 @@
 import { NavLink, useLocation } from 'react-router-dom';
 import { LayoutDashboard, Car, ShoppingBag, MessagesSquare, MoreHorizontal } from 'lucide-react';
 import { ROUTES } from '@/constants/routes';
+import { useAuth } from '@/hooks/useAuth';
 import { cn } from '@/lib/utils';
 
 interface TabItem {
@@ -47,10 +48,12 @@ const adminTabs: TabItem[] = [
 /** Mobile bottom navigation for the admin dashboard. */
 export function BottomTabBar() {
   const { pathname } = useLocation();
+  const { isAdmin } = useAuth();
+  const tabs = isAdmin ? adminTabs : adminTabs.slice(0, 2);
 
   return (
     <nav className="fixed inset-x-0 bottom-0 z-50 flex items-center justify-around border-t bg-card py-2 md:hidden">
-      {adminTabs.map((tab) => {
+      {tabs.map((tab) => {
         const active = tab.match(pathname);
         return (
           <NavLink

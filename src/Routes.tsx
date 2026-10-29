@@ -4,7 +4,7 @@ import { MarketingLayout } from '@/routes/marketing/Layout';
 import { AuthLayout } from '@/routes/auth/Layout';
 import { AccountLayout } from '@/routes/account/Layout';
 import { AdminLayout } from '@/routes/admin/Layout';
-import { AuthGuard, StaffGuard } from '@/guards/AuthGuard';
+import { AdminGuard, AuthGuard, StaffGuard } from '@/guards/AuthGuard';
 import { LoadingSpinner } from '@/components/common/LoadingSpinner';
 import { ROUTES } from '@/constants/routes';
 
@@ -112,18 +112,18 @@ export const router = createBrowserRouter([
       { path: 'vehicles', element: withSuspense(<AdminVehicles />) },
       { path: 'vehicles/new', element: withSuspense(<AdminVehicleForm />) },
       { path: 'vehicles/:id/edit', element: withSuspense(<AdminVehicleForm />) },
-      { path: 'buy-requests', element: withSuspense(<AdminBuyRequests />) },
-      { path: 'sell-requests', element: withSuspense(<AdminSellRequests />) },
-      { path: 'master-data', element: withSuspense(<AdminMasterData />) },
-      { path: 'users', element: withSuspense(<AdminUsers />) },
-      { path: 'chat', element: withSuspense(<AdminChat />) },
-      { path: 'banners', element: withSuspense(<AdminBanners />) },
-      { path: 'testimonials', element: withSuspense(<AdminTestimonials />) },
-      { path: 'faq', element: withSuspense(<AdminFaq />) },
-      { path: 'seo', element: withSuspense(<AdminSeo />) },
-      { path: 'contacts', element: withSuspense(<AdminContacts />) },
-      { path: 'legal', element: withSuspense(<AdminLegal />) },
-      { path: 'settings', element: withSuspense(<AdminSettings />) },
+      { path: 'buy-requests', element: withSuspense(<AdminGuard><AdminBuyRequests /></AdminGuard>) },
+      { path: 'sell-requests', element: withSuspense(<AdminGuard><AdminSellRequests /></AdminGuard>) },
+      { path: 'master-data', element: withSuspense(<AdminGuard><AdminMasterData /></AdminGuard>) },
+      { path: 'users', element: withSuspense(<AdminGuard><AdminUsers /></AdminGuard>) },
+      { path: 'chat', element: withSuspense(<AdminGuard><AdminChat /></AdminGuard>) },
+      { path: 'banners', element: withSuspense(<AdminGuard><AdminBanners /></AdminGuard>) },
+      { path: 'testimonials', element: withSuspense(<AdminGuard><AdminTestimonials /></AdminGuard>) },
+      { path: 'faq', element: withSuspense(<AdminGuard><AdminFaq /></AdminGuard>) },
+      { path: 'seo', element: withSuspense(<AdminGuard><AdminSeo /></AdminGuard>) },
+      { path: 'contacts', element: withSuspense(<AdminGuard><AdminContacts /></AdminGuard>) },
+      { path: 'legal', element: withSuspense(<AdminGuard><AdminLegal /></AdminGuard>) },
+      { path: 'settings', element: withSuspense(<AdminGuard><AdminSettings /></AdminGuard>) },
     ],
   },
   {

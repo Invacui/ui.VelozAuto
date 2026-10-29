@@ -8,6 +8,7 @@ import { ScrollToTop } from '@/components/common/ScrollToTop';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { useAuth } from '@/hooks/useAuth';
 import { PhoneVerificationDialog } from '@/components/auth/PhoneVerificationDialog';
+import { PhoneOnboardingDialog } from '@/components/auth/PhoneOnboardingDialog';
 import { ROUTES } from '@/constants/routes';
 import { cn } from '@/lib/utils';
 
@@ -95,6 +96,7 @@ export function AccountLayout() {
       </div>
       <Footer />
       <PhoneVerificationDialog />
+      <PhoneOnboardingDialog />
     </div>
   );
 }

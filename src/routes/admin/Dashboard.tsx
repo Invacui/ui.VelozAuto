@@ -12,9 +12,11 @@ import { getDashboard } from '@/services/admin.service';
 import { queryKeys } from '@/lib/queryKeys';
 import { ROUTES } from '@/constants/routes';
 import { CATEGORY_LABELS } from '@/constants/vehicleEnums';
+import { useAuth } from '@/hooks/useAuth';
 import { formatINRCompact, relativeTime } from '@/lib/utils';
 
 export default function AdminDashboard() {
+  const { isAdmin } = useAuth();
   const { data, isLoading } = useQuery({ queryKey: queryKeys.admin.dashboard(), queryFn: getDashboard });
 
   if (isLoading || !data) {
@@ -48,10 +50,14 @@ export default function AdminDashboard() {
           <StatCard label="Total vehicles" value={vehicles.total} icon={Car} hint={`${vehicles.active} active · ${vehicles.sold} sold`} />
           <StatCard label="Total views" value={vehicles.totalViews.toLocaleString('en-IN')} icon={Eye} tone="default" />
           <StatCard label="Avg. price" value={formatINRCompact(vehicles.avgPrice)} icon={IndianRupee} tone="success" />
-          <StatCard label="New buy requests" value={requests.buyNew} icon={ShoppingBag} tone="warning" hint={`${requests.buyThisWeek} this week`} />
-          <StatCard label="Pending sell requests" value={requests.sellPending} icon={BadgeIndianRupee} tone="warning" hint={`${requests.sellThisWeek} this week`} />
-          <StatCard label="Users" value={users.total} icon={Users} tone="default" hint={`+${users.thisWeek} this week`} />
-          <StatCard label="Open chats" value={chats.open} icon={MessagesSquare} tone="danger" />
+          {isAdmin && (
+            <>
+              <StatCard label="New buy requests" value={requests.buyNew} icon={ShoppingBag} tone="warning" hint={`${requests.buyThisWeek} this week`} />
+              <StatCard label="Pending sell requests" value={requests.sellPending} icon={BadgeIndianRupee} tone="warning" hint={`${requests.sellThisWeek} this week`} />
+              <StatCard label="Users" value={users.total} icon={Users} tone="default" hint={`+${users.thisWeek} this week`} />
+              <StatCard label="Open chats" value={chats.open} icon={MessagesSquare} tone="danger" />
+            </>
+          )}
           <StatCard label="Draft listings" value={vehicles.draft} icon={Car} tone="default" />
         </div>
 

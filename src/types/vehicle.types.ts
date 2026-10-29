@@ -56,6 +56,16 @@ export interface VehicleCard {
   isInspected?: boolean;
   views?: number;
   createdAt?: string;
+  createdBy?: string;
+  postedBy?: PostedBy | null;
+}
+
+export interface PostedBy {
+  id: string;
+  name: string;
+  email: string;
+  isVendor: boolean;
+  companyName?: string | null;
 }
 
 /** Full vehicle shape (public detail: admin-only fields masked). */

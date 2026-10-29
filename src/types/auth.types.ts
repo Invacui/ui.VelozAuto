@@ -7,6 +7,8 @@ export interface User {
   email: string;
   phone?: string | null;
   role: UserRole;
+  isVendor?: boolean;
+  companyName?: string | null;
   emailVerified: boolean;
   phoneVerified: boolean;
   profileImage?: string | null;

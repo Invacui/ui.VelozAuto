@@ -44,6 +44,8 @@ export interface AdminUser extends User {
 export interface AdminUserUpdateInput {
   role?: 'USER' | 'EMPLOYEE' | 'ADMIN';
   isActive?: boolean;
+  isVendor?: boolean;
+  companyName?: string | null;
 }
 
 export interface Notification {

@@ -6,6 +6,7 @@ import { WhatsAppButton } from '@/components/chat/WhatsAppButton';
 import { ScrollToTop } from '@/components/common/ScrollToTop';
 import { SmoothScroll } from '@/components/common/SmoothScroll';
 import { PhoneVerificationDialog } from '@/components/auth/PhoneVerificationDialog';
+import { PhoneOnboardingDialog } from '@/components/auth/PhoneOnboardingDialog';
 
 /** Public marketing shell: header, routed content, footer and the chat widget. */
 export function MarketingLayout() {
@@ -21,6 +22,7 @@ export function MarketingLayout() {
         <ChatWidget />
         <WhatsAppButton />
         <PhoneVerificationDialog />
+        <PhoneOnboardingDialog />
       </div>
     </SmoothScroll>
   );

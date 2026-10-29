@@ -84,6 +84,21 @@ export default function AdminVehicles() {
     { key: 'km', header: 'KM', render: (v) => formatKm(v.kmDriven) },
     { key: 'year', header: 'Year', render: (v) => v.manufacturingYear },
     { key: 'city', header: 'City', render: (v) => v.locationCity || '—' },
+    {
+      key: 'postedBy',
+      header: 'Posted by',
+      render: (v) =>
+        v.postedBy ? (
+          <div className="min-w-0">
+            <p className="truncate text-sm font-medium">{v.postedBy.companyName || v.postedBy.name}</p>
+            <p className="truncate text-xs text-muted-foreground">
+              {v.postedBy.companyName ? v.postedBy.name : v.postedBy.email}
+            </p>
+          </div>
+        ) : (
+          <span className="text-muted-foreground">—</span>
+        ),
+    },
     { key: 'views', header: 'Views', render: (v) => v.views ?? 0 },
     {
       key: 'status',

@@ -8,6 +8,7 @@ import { DashboardTopbar } from '@/components/layout/DashboardTopbar';
 import { BottomTabBar } from '@/components/layout/BottomTabBar';
 import { ScrollToTop } from '@/components/common/ScrollToTop';
 import { useAdminSocket } from '@/hooks/useAdminSocket';
+import { useAuth } from '@/hooks/useAuth';
 import { ROUTES } from '@/constants/routes';
 
 const mainNavItems: SidebarNavItem[] = [
@@ -32,10 +33,14 @@ const bottomNavItems: SidebarNavItem[] = [
 
 /**
  * Admin / staff dashboard shell. Access is enforced by StaffGuard in the route
- * tree; the sidebar nav itself is role-agnostic (admins see everything).
+ * tree; the sidebar only exposes admin-only modules to super admins.
  */
 export function AdminLayout() {
-  useAdminSocket(true);
+  const { isAdmin } = useAuth();
+  useAdminSocket(isAdmin);
+
+  const visibleMainNav = isAdmin ? mainNavItems : mainNavItems.slice(0, 2);
+  const visibleBottomNav = isAdmin ? bottomNavItems : [];
 
   return (
     <div className="flex h-screen overflow-hidden bg-muted/20">
@@ -43,8 +48,8 @@ export function AdminLayout() {
       <DashboardSidebar
         brand="Veloz Auto"
         brandTo={ROUTES.admin.dashboard}
-        mainNavItems={mainNavItems}
-        bottomNavItems={bottomNavItems}
+        mainNavItems={visibleMainNav}
+        bottomNavItems={visibleBottomNav}
       />
       <div className="flex min-w-0 flex-1 flex-col">
         <DashboardTopbar />

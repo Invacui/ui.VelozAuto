@@ -14,6 +14,7 @@ import { listNotifications, markAllNotificationsRead, markNotificationRead } fro
 import { queryKeys } from '@/lib/queryKeys';
 import { ROUTES } from '@/constants/routes';
 import { useLogout } from '@/hooks/useLogout';
+import { useAuth } from '@/hooks/useAuth';
 import { getApiErrorMessage, relativeTime } from '@/lib/utils';
 
 interface DashboardTopbarProps {
@@ -26,11 +27,13 @@ export function DashboardTopbar({ settingsRoute = ROUTES.admin.settings }: Dashb
   const navigate = useNavigate();
   const qc = useQueryClient();
   const handleLogout = useLogout();
+  const { isAdmin } = useAuth();
 
   const { data } = useQuery({
     queryKey: queryKeys.admin.notifications({ limit: 8 }),
     queryFn: () => listNotifications({ limit: 8 }),
     refetchInterval: 60_000,
+    enabled: isAdmin,
   });
 
   const notifications = data?.data ?? [];
@@ -65,6 +68,7 @@ export function DashboardTopbar({ settingsRoute = ROUTES.admin.settings }: Dashb
       </div>
 
       <div className="flex items-center gap-2">
+        {isAdmin && (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" size="icon" className="relative">
@@ -112,6 +116,7 @@ export function DashboardTopbar({ settingsRoute = ROUTES.admin.settings }: Dashb
             )}
           </DropdownMenuContent>
         </DropdownMenu>
+        )}
 
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -131,7 +136,9 @@ export function DashboardTopbar({ settingsRoute = ROUTES.admin.settings }: Dashb
               <p className="text-xs text-muted-foreground">{user?.email}</p>
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={() => navigate(settingsRoute)}>Settings</DropdownMenuItem>
+            {isAdmin && (
+              <DropdownMenuItem onClick={() => navigate(settingsRoute)}>Settings</DropdownMenuItem>
+            )}
             <DropdownMenuItem onClick={handleLogout} className="text-destructive focus:text-destructive">
               Log out
             </DropdownMenuItem>

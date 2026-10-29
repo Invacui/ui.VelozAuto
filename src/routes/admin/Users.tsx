@@ -4,6 +4,7 @@ import { Search, Eye, CheckCircle2, XCircle } from 'lucide-react';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import {
@@ -33,6 +34,9 @@ export default function AdminUsers() {
   const [role, setRole] = useState('__all__');
   const [page, setPage] = useState(1);
   const [active, setActive] = useState<AdminUser | null>(null);
+  const [roleTarget, setRoleTarget] = useState<{ user: AdminUser; role: UserRole } | null>(null);
+  const [isVendor, setIsVendor] = useState<boolean | null>(null);
+  const [companyName, setCompanyName] = useState('');
   const debouncedQ = useDebounce(q, 350);
 
   const params = {
@@ -49,7 +53,11 @@ export default function AdminUsers() {
 
   const { mutate: change } = useMutation({
     mutationFn: ({ id, payload }: { id: string; payload: any }) => updateUser(id, payload),
-    onSuccess: () => { toast.success('User updated'); qc.invalidateQueries({ queryKey: ['admin', 'users'] }); },
+    onSuccess: () => {
+      toast.success('User updated');
+      setRoleTarget(null);
+      qc.invalidateQueries({ queryKey: ['admin', 'users'] });
+    },
     onError: (e) => toast.error(getApiErrorMessage(e, 'Could not update user')),
   });
 
@@ -76,12 +84,38 @@ export default function AdminUsers() {
       key: 'role',
       header: 'Role',
       render: (u) => (
-        <Select value={u.role} onValueChange={(r) => change({ id: u._id, payload: { role: r } })} disabled={u._id === (me?._id || me?.id)}>
+        <Select
+          value={u.role}
+          onValueChange={(r) => {
+            if (r === u.role) return;
+            if (r === 'EMPLOYEE') {
+              setRoleTarget({ user: u, role: 'EMPLOYEE' });
+              setIsVendor(null);
+              setCompanyName(u.companyName ?? '');
+              return;
+            }
+            change({ id: u._id, payload: { role: r } });
+          }}
+          disabled={u._id === (me?._id || me?.id)}
+        >
           <SelectTrigger className="w-32"><SelectValue /></SelectTrigger>
           <SelectContent>{ROLES.map((r) => <SelectItem key={r} value={r}>{titleCase(r)}</SelectItem>)}</SelectContent>
         </Select>
       ),
     },
+    {
+      key: 'vendor',
+      header: 'Vendor',
+      render: (u) =>
+        u.role === 'EMPLOYEE' ? (
+          <span className={u.isVendor ? 'text-sm font-medium text-primary' : 'text-sm text-muted-foreground'}>
+            {u.isVendor ? 'Vendor' : 'Employee'}
+          </span>
+        ) : (
+          <span className="text-muted-foreground">—</span>
+        ),
+    },
+    { key: 'company', header: 'Company', render: (u) => u.companyName || '—' },
     {
       key: 'status',
       header: 'Status',
@@ -159,6 +193,8 @@ export default function AdminUsers() {
               <Separator />
               <div className="grid gap-2 text-sm sm:grid-cols-2">
                 <p>Role: {titleCase(active.role)}</p>
+                <p>Vendor: {active.role === 'EMPLOYEE' ? (active.isVendor ? 'Yes' : 'No') : '—'}</p>
+                <p>Company: {active.companyName || '—'}</p>
                 <p>Phone: {active.phone || '—'}</p>
                 <p>Email verified: {active.emailVerified ? 'Yes' : 'No'}</p>
                 <p>Phone verified: {active.phoneVerified ? 'Yes' : 'No'}</p>
@@ -173,6 +209,75 @@ export default function AdminUsers() {
                   onClick={() => change({ id: active._id, payload: { isActive: !active.isActive } })}
                 >
                   {active.isActive ? 'Disable account' : 'Enable account'}
+                </Button>
+              </div>
+            </>
+          )}
+        </DialogContent>
+      </Dialog>
+
+      <Dialog open={!!roleTarget} onOpenChange={(o) => !o && setRoleTarget(null)}>
+        <DialogContent>
+          {roleTarget && (
+            <>
+              <DialogHeader>
+                <DialogTitle>Make {roleTarget.user.name} an employee</DialogTitle>
+                <DialogDescription>
+                  Employees only see and manage the listings they create.
+                </DialogDescription>
+              </DialogHeader>
+
+              <div className="space-y-3">
+                <div>
+                  <Label>Is this employee a vendor?</Label>
+                  <div className="mt-2 flex gap-2">
+                    <Button
+                      type="button"
+                      variant={isVendor === true ? 'default' : 'outline'}
+                      onClick={() => setIsVendor(true)}
+                    >
+                      Yes, vendor
+                    </Button>
+                    <Button
+                      type="button"
+                      variant={isVendor === false ? 'default' : 'outline'}
+                      onClick={() => { setIsVendor(false); setCompanyName(''); }}
+                    >
+                      No, employee
+                    </Button>
+                  </div>
+                </div>
+
+                {isVendor && (
+                  <div>
+                    <Label htmlFor="company-name">Company name</Label>
+                    <Input
+                      id="company-name"
+                      value={companyName}
+                      onChange={(e) => setCompanyName(e.target.value)}
+                      placeholder="e.g. Priya Motors"
+                      className="mt-1.5 h-10"
+                    />
+                  </div>
+                )}
+              </div>
+
+              <div className="flex justify-end gap-2">
+                <Button variant="outline" onClick={() => setRoleTarget(null)}>Cancel</Button>
+                <Button
+                  disabled={isVendor === null || (isVendor === true && !companyName.trim())}
+                  onClick={() =>
+                    change({
+                      id: roleTarget.user._id,
+                      payload: {
+                        role: 'EMPLOYEE',
+                        isVendor,
+                        companyName: isVendor ? companyName.trim() : null,
+                      },
+                    })
+                  }
+                >
+                  Save
                 </Button>
               </div>
             </>

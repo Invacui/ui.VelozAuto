@@ -47,8 +47,10 @@ api.interceptors.response.use(
     isRefreshing = true;
 
     try {
+      // localStorage is shared across tabs; prefer it so a rotated token from
+      // another tab is not replaced by this tab's stale Redux copy.
       const refreshToken =
-        store.getState().auth.refreshToken || localStorage.getItem('vm-refresh-token');
+        localStorage.getItem('vm-refresh-token') || store.getState().auth.refreshToken;
       const { data } = await axios.post<{
         success: boolean;
         data: { accessToken: string; refreshToken?: string };
