@@ -30,6 +30,26 @@ export default defineConfig({
       '@': path.resolve(__dirname, './src'),
     },
   },
+  build: {
+    target: 'es2020',
+    sourcemap: false,
+    cssCodeSplit: true,
+    chunkSizeWarningLimit: 900,
+    rollupOptions: {
+      output: {
+        manualChunks(id) {
+          if (!id.includes('node_modules')) return;
+          if (/node_modules[\\/](react-dom|react|scheduler)[\\/]/.test(id)) return 'react';
+          if (/node_modules[\\/]react-router/.test(id)) return 'router';
+          if (/node_modules[\\/](@reduxjs|react-redux|redux)[\\/]/.test(id)) return 'redux';
+          if (/node_modules[\\/]@tanstack[\\/]/.test(id)) return 'query';
+          if (/node_modules[\\/](socket.io-client|engine.io-client|socket.io-parser)[\\/]/.test(id)) return 'realtime';
+          if (/node_modules[\\/](apexcharts|react-apexcharts)[\\/]/.test(id)) return 'charts';
+          if (/node_modules[\\/]lucide-react[\\/]/.test(id)) return 'icons';
+        },
+      },
+    },
+  },
   server: {
     port: 3000,
     host: "0.0.0.0",

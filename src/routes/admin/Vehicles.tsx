@@ -66,7 +66,7 @@ export default function AdminVehicles() {
         return (
           <div className="flex items-center gap-3">
             {thumb ? (
-              <img src={thumb} alt="" className="h-10 w-14 shrink-0 rounded object-cover" />
+              <img src={thumb} alt="" width={56} height={40} className="h-10 w-14 shrink-0 rounded object-cover" />
             ) : (
               <span className="h-10 w-14 shrink-0 rounded bg-muted" />
             )}

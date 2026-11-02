@@ -46,7 +46,7 @@ export default function AdminBanners() {
   const startEdit = (b: Banner) => { setEditing(b); setForm({ ...b }); setOpen(true); };
 
   const columns: Column<Banner>[] = [
-    { key: 'preview', header: '', render: (b) => b.image ? <img src={b.image} alt="" className="h-10 w-20 rounded object-cover" /> : <span className="block h-10 w-20 rounded bg-muted" /> },
+    { key: 'preview', header: '', render: (b) => b.image ? <img src={b.image} alt="" width={80} height={40} className="h-10 w-20 rounded object-cover" /> : <span className="block h-10 w-20 rounded bg-muted" /> },
     { key: 'title', header: 'Title', render: (b) => <div><p className="text-sm font-medium">{b.title}</p>{b.subtitle && <p className="text-xs text-muted-foreground">{b.subtitle}</p>}</div> },
     { key: 'position', header: 'Position', render: (b) => <StatusBadge label={titleCase(b.position)} tone="info" /> },
     { key: 'order', header: 'Order', render: (b) => b.sortOrder ?? 0 },
@@ -80,7 +80,7 @@ export default function AdminBanners() {
             <div className="space-y-1.5"><Label className="text-xs">Title</Label><Input value={form.title} onChange={(e) => setForm({ ...form, title: e.target.value })} /></div>
             <div className="space-y-1.5"><Label className="text-xs">Subtitle</Label><Input value={form.subtitle || ''} onChange={(e) => setForm({ ...form, subtitle: e.target.value })} /></div>
             <div className="space-y-1.5"><Label className="text-xs">Image URL</Label><Input value={form.image} onChange={(e) => setForm({ ...form, image: e.target.value })} /></div>
-            {form.image && <img src={form.image} alt="" className="h-24 w-full rounded-md border object-cover" />}
+            {form.image && <img src={form.image} alt="" width={400} height={150} className="h-24 w-full rounded-md border object-cover" />}
             <div className="space-y-1.5"><Label className="text-xs">Link</Label><Input value={form.link || ''} onChange={(e) => setForm({ ...form, link: e.target.value })} /></div>
             <div className="grid grid-cols-2 gap-3">
               <div className="space-y-1.5"><Label className="text-xs">Position</Label>

@@ -1,6 +1,5 @@
 import { ReactNode, useEffect, useRef, useState } from 'react';
 import Lenis from 'lenis';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { LenisContext } from '@/contexts/LenisContext';
 
 export function SmoothScroll({ children }: { children: ReactNode }) {
@@ -19,7 +18,14 @@ export function SmoothScroll({ children }: { children: ReactNode }) {
     setLenis(lenis);
 
     // Keep GSAP ScrollTrigger in sync with Lenis' virtual scroll position.
-    lenis.on('scroll', ScrollTrigger.update);
+    // Imported lazily so GSAP stays off the critical entry bundle.
+    let cancelled = false;
+    let syncScroll: (() => void) | undefined;
+    void import('gsap/ScrollTrigger').then(({ ScrollTrigger }) => {
+      if (cancelled) return;
+      syncScroll = () => ScrollTrigger.update();
+      lenis.on('scroll', syncScroll);
+    });
 
     function raf(time: number) {
       lenis.raf(time);
@@ -29,6 +35,8 @@ export function SmoothScroll({ children }: { children: ReactNode }) {
     const rafId = requestAnimationFrame(raf);
 
     return () => {
+      cancelled = true;
+      if (syncScroll) lenis.off('scroll', syncScroll);
       cancelAnimationFrame(rafId);
       lenis.destroy();
     };

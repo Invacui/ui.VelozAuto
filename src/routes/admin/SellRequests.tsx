@@ -270,7 +270,7 @@ export default function AdminSellRequests() {
                       <div className="flex flex-wrap gap-2">
                         {active.images.map((img, i) => (
                           <div key={i} className="relative h-20 w-24 overflow-hidden rounded-md border">
-                            <img src={img.url} alt={img.tag} className="h-full w-full object-cover" />
+                            <img src={img.url} alt={img.tag} width={96} height={80} className="h-full w-full object-cover" />
                             <span className="absolute bottom-0 left-0 right-0 bg-black/55 px-1 py-0.5 text-[9px] text-white">{titleCase(img.tag)}</span>
                           </div>
                         ))}

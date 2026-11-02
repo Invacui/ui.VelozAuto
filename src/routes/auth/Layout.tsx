@@ -17,7 +17,7 @@ export function AuthLayout() {
       <div className="flex flex-col px-6 py-8 sm:px-10">
         <Link to={ROUTES.home} className="flex items-center gap-3">
           <span className="flex size-14 shrink-0 items-center justify-center overflow-hidden rounded-2xl border-2 p-0.5">
-            <img src={logoImage} alt="Veloz Auto" className="h-full w-full object-contain" />
+            <img src={logoImage} alt="Veloz Auto" width={256} height={170} decoding="async" className="h-full w-full object-contain" />
           </span>
           <span className="flex h-14 items-center font-Incompleeta text-2xl leading-none tracking-wide">
             VELOZ AUTO

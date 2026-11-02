@@ -48,6 +48,9 @@ export function Brands() {
                   src={b.logo}
                   alt={`${b.name} logo`}
                   loading="lazy"
+                  decoding="async"
+                  width={72}
+                  height={36}
                   className="marquee-logos__logo"
                 />
                 <span>{b.name}</span>

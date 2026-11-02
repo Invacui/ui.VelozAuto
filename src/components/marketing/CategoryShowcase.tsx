@@ -200,7 +200,10 @@ export function CategoryShowcase() {
             <img
               src={item.image}
               alt={item.title}
+              width={800}
+              height={500}
               loading="lazy"
+              decoding="async"
               draggable={false}
               className="h-full w-full object-cover"
             />

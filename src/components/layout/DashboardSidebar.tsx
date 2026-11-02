@@ -55,7 +55,7 @@ export function DashboardSidebar({ brand, brandTo, mainNavItems, bottomNavItems 
   const brandButton = (expanded: boolean) => (
     <button onClick={() => navigate(brandTo)} className="flex min-w-0 items-center gap-2 font-bold text-primary">
       <span className="flex size-8 shrink-0 items-center justify-center overflow-hidden rounded-lg">
-        <img src={logoImage} alt={brand} className="h-full w-full scale-150 object-contain" />
+        <img src={logoImage} alt={brand} width={256} height={170} decoding="async" className="h-full w-full scale-150 object-contain" />
       </span>
       {expanded && <span className="truncate text-base">{brand}</span>}
     </button>

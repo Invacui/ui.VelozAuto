@@ -4,7 +4,8 @@ import {
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { ROUTES } from '@/constants/routes';
-import bus from '@/assets/bus.webp'
+import bus483 from '@/assets/bus-483.webp'
+import bus966 from '@/assets/bus-966.webp'
 /** Secondary section: headline, selling points and the mobile search form. */
 export function SearchSection() {
   return (
@@ -52,7 +53,17 @@ export function SearchSection() {
           {/* Truck visual — replace the icon block below with your truck image */}
           <div className="bg-[#e0e0e0] shadow-[20px_20px_60px_#bebebe,-20px_-20px_60px_#ffffff] rounded-3xl relative mx-auto hidden w-full max-w-lg lg:block">
                   <div className="relative flex h-[26rem] flex-col items-center justify-center rounded-[2.5rem] ">
-                    <img src={bus} alt="commercial vehicle" className="-scale-x-100" />
+                    <img
+  src={bus483}
+  srcSet={`${bus966} 966w, ${bus483} 483w`}
+  sizes="(max-width: 1024px) 100vw, 483px"
+  alt="commercial vehicle"
+  width={483}
+  height={265}
+  loading="lazy"
+  decoding="async"
+  className="-scale-x-100"
+/>
                   </div>
 
             <div className="absolute -left-4 top-8 rounded-xl border border-white/70 bg-white/85 px-4 py-2 text-sm font-semibold text-slate-800 shadow-lg backdrop-blur">

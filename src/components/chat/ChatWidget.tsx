@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { lazy, Suspense, useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { MessageCircle, X } from 'lucide-react';
 import { toast } from 'sonner';
@@ -6,12 +6,15 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
-import { ChatWindow } from '@/components/chat/ChatWindow';
 import { createTicket, getMyTickets } from '@/services/chat.service';
 import { queryKeys } from '@/lib/queryKeys';
 import { useAuth } from '@/hooks/useAuth';
 import { cn, getApiErrorMessage } from '@/lib/utils';
 import type { ChatTicket } from '@/types/chat.types';
+
+const ChatWindow = lazy(() =>
+  import('@/components/chat/ChatWindow').then((m) => ({ default: m.ChatWindow })),
+);
 
 /** Floating support-chat launcher rendered on the marketing site. */
 export function ChatWidget() {
@@ -73,7 +76,9 @@ export function ChatWidget() {
               </Button>
             </div>
           ) : activeTicket ? (
-            <ChatWindow ticket={activeTicket} currentUserId={user!.id} />
+            <Suspense fallback={null}>
+              <ChatWindow ticket={activeTicket} currentUserId={user!.id} />
+            </Suspense>
           ) : (
             <form
               className="flex flex-1 flex-col gap-3 p-4"

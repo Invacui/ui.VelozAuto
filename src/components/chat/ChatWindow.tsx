@@ -99,7 +99,7 @@ export function ChatWindow({ ticket, currentUserId }: Props) {
                   )}
                 >
                   {m.imageUrl && (
-                    <img src={m.imageUrl} alt="" className="mb-1 max-h-48 rounded-lg object-cover" />
+                    <img src={m.imageUrl} alt="" width={400} height={300} className="mb-1 max-h-48 rounded-lg object-cover" />
                   )}
                   {m.message && <p className="whitespace-pre-wrap">{m.message}</p>}
                   <span className={cn('mt-1 block text-[10px]', mine ? 'text-primary-foreground/70' : 'text-muted-foreground')}>

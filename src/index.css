@@ -60,9 +60,6 @@
     align-items: center;
     width: 100%;
   }
-  .bc{
-    border:2px solid red;
-  }
   .marquee-logos__container {
     display: flex;
     align-items: center;

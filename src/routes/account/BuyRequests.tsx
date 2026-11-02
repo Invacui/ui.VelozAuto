@@ -61,7 +61,7 @@ export default function BuyRequests() {
                   <CardContent className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                     <div className="flex min-w-0 items-center gap-3">
                       {v?.primaryImage ? (
-                        <img src={v.primaryImage} alt="" className="h-16 w-20 shrink-0 rounded-lg object-cover" />
+                        <img src={v.primaryImage} alt="" width={80} height={64} className="h-16 w-20 shrink-0 rounded-lg object-cover" />
                       ) : (
                         <span className="flex h-16 w-20 shrink-0 items-center justify-center rounded-lg bg-muted text-muted-foreground">
                           <Car className="h-5 w-5" />

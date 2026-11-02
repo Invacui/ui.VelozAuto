@@ -91,7 +91,7 @@ export default function Compare() {
                         </button>
                         <Link to={ROUTES.vehicleDetail(v.slug)} className="block">
                           {v.images?.[0]?.url && (
-                            <img src={v.images[0].url} alt="" className="mb-2 h-28 w-full rounded-lg object-cover" />
+                            <img src={v.images[0].url} alt="" width={640} height={280} className="mb-2 h-28 w-full rounded-lg object-cover" />
                           )}
                           <p className="text-left text-sm font-semibold">{v.manufacturingYear} {v.brandName} {v.model}</p>
                           <p className="text-left text-sm font-bold text-primary">{formatINRCompact(v.price)}</p>

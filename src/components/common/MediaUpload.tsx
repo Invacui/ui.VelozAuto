@@ -81,7 +81,7 @@ export function MediaUpload({
       <div className="flex flex-wrap gap-3">
         {items.map((item) => (
           <div key={item.id} className="group relative h-24 w-24 overflow-hidden rounded-lg border">
-            <img src={item.url} alt="" className="h-full w-full object-cover" />
+            <img src={item.url} alt="" width={96} height={96} className="h-full w-full object-cover" />
             <button
               type="button"
               aria-label="Remove image"

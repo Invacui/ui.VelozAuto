@@ -41,7 +41,7 @@ export function VehicleGallery({ images, title }: Props) {
     <>
       <div className="space-y-3">
         <div className="group relative aspect-[4/3] overflow-hidden rounded-xl border bg-muted">
-          <img src={sorted[active].url} alt={`${title} — image ${active + 1}`} className="h-full w-full object-cover" />
+          <img src={sorted[active].url} alt={`${title} — image ${active + 1}`} width={800} height={600} loading="eager" decoding="async" className="h-full w-full object-cover" />
           {count > 1 && (
             <>
               <button
@@ -92,7 +92,7 @@ export function VehicleGallery({ images, title }: Props) {
                   i === active ? 'border-primary' : 'border-transparent opacity-70 hover:opacity-100',
                 )}
               >
-                <img src={img.url} alt="" className="h-full w-full object-cover" loading="lazy" />
+                <img src={img.url} alt="" width={80} height={60} className="h-full w-full object-cover" loading="lazy" />
               </button>
             ))}
           </div>
@@ -117,7 +117,7 @@ export function VehicleGallery({ images, title }: Props) {
           >
             <ChevronLeft className="h-7 w-7" />
           </button>
-          <img src={sorted[active].url} alt={`${title} — image ${active + 1}`} className="max-h-[85vh] max-w-[90vw] object-contain" />
+          <img src={sorted[active].url} alt={`${title} — image ${active + 1}`} width={1600} height={900} className="max-h-[85vh] max-w-[90vw] object-contain" />
           <button
             type="button"
             aria-label="Next"

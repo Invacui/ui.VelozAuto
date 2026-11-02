@@ -1,19 +1,16 @@
    import { lazy, Suspense } from 'react';
 import { createBrowserRouter } from 'react-router-dom';
 import { MarketingLayout } from '@/routes/marketing/Layout';
-import { AuthLayout } from '@/routes/auth/Layout';
-import { AccountLayout } from '@/routes/account/Layout';
-import { AdminLayout } from '@/routes/admin/Layout';
+import Home from '@/routes/marketing/Home';
 import { AdminGuard, AuthGuard, StaffGuard } from '@/guards/AuthGuard';
 import { LoadingSpinner } from '@/components/common/LoadingSpinner';
 import { ROUTES } from '@/constants/routes';
 
 const withSuspense = (node: React.ReactNode) => (
-  <Suspense fallback={<LoadingSpinner className="min-h-[50vh]" size="lg" />}>{node}</Suspense>
+  <Suspense fallback={<LoadingSpinner className="min-h-[100svh]" size="lg" />}>{node}</Suspense>
 );
 
 /* ---- Marketing ---- */
-const Home = lazy(() => import('@/routes/marketing/Home'));
 const Vehicles = lazy(() => import('@/routes/marketing/Vehicles'));
 const VehicleDetail = lazy(() => import('@/routes/marketing/VehicleDetail'));
 const Compare = lazy(() => import('@/routes/marketing/Compare'));
@@ -57,6 +54,16 @@ const AdminContacts = lazy(() => import('@/routes/admin/Contacts'));
 const AdminLegal = lazy(() => import('@/routes/admin/Legal'));
 const AdminSettings = lazy(() => import('@/routes/admin/Settings'));
 
+const AuthLayout = lazy(() =>
+  import('@/routes/auth/Layout').then((m) => ({ default: m.AuthLayout })),
+);
+const AccountLayout = lazy(() =>
+  import('@/routes/account/Layout').then((m) => ({ default: m.AccountLayout })),
+);
+const AdminLayout = lazy(() =>
+  import('@/routes/admin/Layout').then((m) => ({ default: m.AdminLayout })),
+);
+
 const NotFound = lazy(() => import('@/routes/NotFound'));
 const ErrorPage = lazy(() => import('@/routes/ErrorPage'));
 
@@ -66,7 +73,7 @@ export const router = createBrowserRouter([
     element: <MarketingLayout />,
     errorElement: withSuspense(<ErrorPage />),
     children: [
-      { index: true, element: withSuspense(<Home />) },
+      { index: true, element: <Home /> },
       { path: 'vehicles', element: withSuspense(<Vehicles />) },
       { path: 'vehicles/:slug', element: withSuspense(<VehicleDetail />) },
       { path: 'compare', element: withSuspense(<Compare />) },
@@ -81,7 +88,7 @@ export const router = createBrowserRouter([
     ],
   },
   {
-    element: <AuthLayout />,
+    element: withSuspense(<AuthLayout />),
     errorElement: withSuspense(<ErrorPage />),
     children: [
       { path: ROUTES.login, element: withSuspense(<Login />) },
@@ -93,7 +100,7 @@ export const router = createBrowserRouter([
   },
   {
     path: ROUTES.account.root,
-    element: <AuthGuard><AccountLayout /></AuthGuard>,
+    element: withSuspense(<AuthGuard><AccountLayout /></AuthGuard>),
     errorElement: withSuspense(<ErrorPage />),
     children: [
       { index: true, element: withSuspense(<AccountOverview />) },
@@ -105,7 +112,7 @@ export const router = createBrowserRouter([
   },
   {
     path: ROUTES.admin.root,
-    element: <StaffGuard><AdminLayout /></StaffGuard>,
+    element: withSuspense(<StaffGuard><AdminLayout /></StaffGuard>),
     errorElement: withSuspense(<ErrorPage />),
     children: [
       { index: true, element: withSuspense(<AdminDashboard />) },

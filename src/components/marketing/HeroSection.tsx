@@ -6,7 +6,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { SearchBox } from '@/components/marketing/SearchBox';
 import { CONTACT_PHONE, CONTACT_PHONE_HREF } from '@/lib/seo';
 import { SOCIAL_LINKS } from '@/constants/socials';
-import carImage from '@/assets/hero_car.webp';
+const carImage = '/hero_car-710.webp';
 
 gsap.registerPlugin(useGSAP, ScrollTrigger);
 
@@ -142,6 +142,13 @@ export function HeroSection() {
             ref={carRef}
             src={carImage}
             alt="Veloz Auto — verified used vehicles"
+            srcSet="/hero_car-400.webp 400w, /hero_car-710.webp 710w, /hero_car-1420.webp 1420w"
+            sizes="(max-width: 768px) 100vw, 710px"
+            width={710}
+            height={421}
+            loading="eager"
+            fetchPriority="high"
+            decoding="async"
             className="z-30 mx-auto size-[92%] will-change-transform lg:size-[70%]"
           />
 

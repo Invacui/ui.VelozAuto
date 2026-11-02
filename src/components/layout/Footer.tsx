@@ -61,7 +61,7 @@ export function Footer() {
           <div className="col-span-2">
             <Link to={ROUTES.home} className="flex items-center gap-3">
               <span className="flex size-12 shrink-0 items-center justify-center overflow-hidden rounded-2xl border-2 border-white/20 ">
-                <img src={logoImage} alt="Veloz Auto" className="h-full w-full scale-150  object-contain invert" />
+                <img src={logoImage} alt="Veloz Auto" width={256} height={170} decoding="async" className="h-full w-full scale-150  object-contain invert" />
               </span>
               <span className="flex h-16 items-center font-Incompleeta text-3xl leading-none tracking-wide text-white">
                 VELOZ AUTO

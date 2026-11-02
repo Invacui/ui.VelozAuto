@@ -1,2 +1,4 @@
 node_modules/
 dist/
+.perf-baseline/
+.perf-after/

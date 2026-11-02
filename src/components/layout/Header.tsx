@@ -254,6 +254,8 @@ export function Header() {
                   <img
                     src={user.profileImage}
                     alt={user.name}
+                    width={56}
+                    height={56}
                     className="h-14 w-14 rounded-full object-cover"
                   />
                 ) : (
@@ -486,6 +488,9 @@ export function Header() {
               <img
                 src={logoImage}
                 alt="Veloz Auto"
+                width={256}
+                height={170}
+                decoding="async"
                 className="scale-150 h-full w-full object-contain [filter:invert(37%)_sepia(93%)_saturate(5043%)_hue-rotate(200deg)_brightness(101%)_contrast(105%)]"
               />
             </span>

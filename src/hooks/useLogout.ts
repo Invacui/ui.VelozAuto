@@ -4,7 +4,6 @@ import { useQueryClient } from '@tanstack/react-query';
 import { useAppDispatch } from '@/store/hooks';
 import { clearAuth } from '@/store/auth.slice';
 import { logout as logoutApi } from '@/services/auth.service';
-import { disconnectSocket } from '@/lib/socket';
 import { ROUTES } from '@/constants/routes';
 
 /** Clear Redux auth + storage, notify the backend (best-effort), drop the
@@ -16,7 +15,7 @@ export function useLogout() {
 
   return useCallback(() => {
     logoutApi().catch(() => {});
-    disconnectSocket();
+    void import('@/lib/socket').then(({ disconnectSocket }) => disconnectSocket());
     dispatch(clearAuth());
     queryClient.clear();
     navigate(ROUTES.login);

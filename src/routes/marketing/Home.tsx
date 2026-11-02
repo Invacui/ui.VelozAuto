@@ -1,16 +1,18 @@
+import { lazy, Suspense, type ReactNode } from 'react';
 import { SEO } from '@/components/common/SEO';
 import { HeroSection } from '@/components/marketing/HeroSection';
-import { BuySellPromo } from '@/components/marketing/BuySellPromo';
-import { SearchSection } from '@/components/marketing/SearchSection';
-import { CategoryShowcase } from '@/components/marketing/CategoryShowcase';
-import { Featured } from '@/components/marketing/Featured';
-import { SellCta } from '@/components/marketing/SellCta';
-import { HowItWorks } from '@/components/marketing/HowItWorks';
-import { WhyChooseUs } from '@/components/marketing/WhyChooseUs';
-import { Brands } from '@/components/marketing/Brands';
-import { Testimonials } from '@/components/marketing/Testimonials';
 import { SectionGutter } from '@/components/marketing/SectionGutter';
 import { SITE_URL, SITE_NAME, DEFAULT_DESCRIPTION } from '@/lib/seo';
+
+const BuySellPromo = lazy(() => import('@/components/marketing/BuySellPromo'));
+const SearchSection = lazy(() => import('@/components/marketing/SearchSection'));
+const CategoryShowcase = lazy(() => import('@/components/marketing/CategoryShowcase'));
+const Featured = lazy(() => import('@/components/marketing/Featured'));
+const SellCta = lazy(() => import('@/components/marketing/SellCta'));
+const HowItWorks = lazy(() => import('@/components/marketing/HowItWorks'));
+const WhyChooseUs = lazy(() => import('@/components/marketing/WhyChooseUs'));
+const Brands = lazy(() => import('@/components/marketing/Brands'));
+const Testimonials = lazy(() => import('@/components/marketing/Testimonials'));
 
 const organizationJsonLd = {
   '@context': 'https://schema.org',
@@ -23,6 +25,10 @@ const organizationJsonLd = {
 
 /** Marketing index — composes the individual landing-page sections. */
 export default function Home() {
+  const withSection = (node: ReactNode) => (
+    <Suspense fallback={<div aria-hidden className="py-24" />}>{node}</Suspense>
+  );
+
   return (
     <>
       <SEO
@@ -34,15 +40,15 @@ export default function Home() {
       <SectionGutter />
 
       <HeroSection />
-      <BuySellPromo />
-      <Featured />
-      <CategoryShowcase />
-      <SearchSection />
-      <Brands />
-      <WhyChooseUs />
-      <HowItWorks />
-      <Testimonials />
-      <SellCta />
+      {withSection(<BuySellPromo />)}
+      {withSection(<Featured />)}
+      {withSection(<CategoryShowcase />)}
+      {withSection(<SearchSection />)}
+      {withSection(<Brands />)}
+      {withSection(<WhyChooseUs />)}
+      {withSection(<HowItWorks />)}
+      {withSection(<Testimonials />)}
+      {withSection(<SellCta />)}
       <div aria-hidden className="h-16 sm:h-20" />
     </>
   );
