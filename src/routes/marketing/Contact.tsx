@@ -30,6 +30,7 @@ type Form = z.infer<typeof schema>;
 export default function Contact() {
   const [sent, setSent] = useState(false);
   const { data: settings } = useQuery({ queryKey: queryKeys.content.siteSettings(), queryFn: getSiteSettings });
+  const supportEmail = settings?.email || SUPPORT_EMAIL;
 
   const { register, handleSubmit, reset, formState: { errors } } = useForm<Form>({
     resolver: zodResolver(schema),
@@ -112,10 +113,10 @@ export default function Contact() {
                     <span><span className="block font-medium">Phone</span>{settings.phone}</span>
                   </p>
                 )}
-                {settings?.email && (
+                {supportEmail && (
                   <p className="flex items-start gap-3">
                     <Mail className="mt-0.5 h-4 w-4 text-primary" />
-                    <span><span className="block font-medium">Email</span>{settings.email}</span>
+                    <span><span className="block font-medium">Email</span>{supportEmail}</span>
                   </p>
                 )}
                 {settings?.address && (
@@ -127,7 +128,7 @@ export default function Contact() {
                 {settings?.workingHours && (
                   <p className="text-xs text-muted-foreground">{settings.workingHours}</p>
                 )}
-                {!settings?.phone && !settings?.email && !settings?.address && SUPPORT_EMAIL && (
+                {!settings?.phone && !supportEmail && !settings?.address && SUPPORT_EMAIL && (
                   <p className="text-muted-foreground">
                     Email us at{' '}
                     <a className="text-primary hover:underline" href={`mailto:${SUPPORT_EMAIL}`}>

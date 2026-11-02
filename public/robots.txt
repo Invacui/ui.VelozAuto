@@ -5,4 +5,4 @@ Disallow: /admin/
 Disallow: /account/
 Disallow: /api/
 
-Sitemap: https://vehiclemarket.example/sitemap.xml
+Sitemap: https://velozauto.in/sitemap.xml

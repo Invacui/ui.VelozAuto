@@ -28,6 +28,7 @@ import { ROUTES } from "@/constants/routes";
 import { VEHICLE_CATEGORIES } from "@/constants/vehicleEnums";
 import { getSiteSettings } from "@/services/content.service";
 import { queryKeys } from "@/lib/queryKeys";
+import { SUPPORT_EMAIL } from "@/lib/seo";
 import { cn } from "@/lib/utils";
 import logoImage from "@/assets/logo.png";
 
@@ -84,6 +85,7 @@ export function Header() {
     staleTime: 10 * 60_000,
   });
   const social = settings?.social || {};
+  const contactEmail = settings?.email || SUPPORT_EMAIL;
 
   // Transparent-over-hero (landing) vs. blurred/white bar — mirrors ui-mrt.
   useEffect(() => {
@@ -439,12 +441,12 @@ export function Header() {
                 </div>
                 <div>
                   <h6 className="mb-3 text-xs uppercase tracking-[0.4em] text-white/40">Contact</h6>
-                  {settings?.email && (
+                  {contactEmail && (
                     <a
-                      href={`mailto:${settings.email}`}
+                      href={`mailto:${contactEmail}`}
                       className="block text-sm text-white/60 transition-colors hover:text-primary">
                       <Mail className="mr-2 inline-block h-4 w-4" />
-                      {settings.email}
+                      {contactEmail}
                     </a>
                   )}
                   {settings?.phone && (

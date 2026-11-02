@@ -146,9 +146,16 @@ export function HeroSection() {
           />
 
           {/* Desktop-only search form, revealed as the car slides away */}
-          <div className="pointer-events-none absolute inset-0 hidden items-center justify-center lg:flex">
+          <div className="pointer-events-none absolute max-w-[800px] mx-auto inset-0 hidden items-center justify-center lg:flex">
             <div ref={searchRef} className="pointer-events-auto w-full max-w-5xl px-4 opacity-0">
               <SearchBox />
+            </div>
+          </div>
+
+          {/* Mobile-only glass search card floating over the car */}
+          <div className="pointer-events-none max-w-[75vw]   mx-auto  absolute inset-x-0 bottom-32 z-40  lg:hidden">
+            <div className="pointer-events-auto mx-auto w-full max-w-md px-1">
+              <SearchBox glass />
             </div>
           </div>
         </div>

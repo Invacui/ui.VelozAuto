@@ -1,5 +1,6 @@
 import { SEO } from '@/components/common/SEO';
 import { HeroSection } from '@/components/marketing/HeroSection';
+import { BuySellPromo } from '@/components/marketing/BuySellPromo';
 import { SearchSection } from '@/components/marketing/SearchSection';
 import { CategoryShowcase } from '@/components/marketing/CategoryShowcase';
 import { Featured } from '@/components/marketing/Featured';
@@ -33,6 +34,7 @@ export default function Home() {
       <SectionGutter />
 
       <HeroSection />
+      <BuySellPromo />
       <Featured />
       <CategoryShowcase />
       <SearchSection />
@@ -41,6 +43,7 @@ export default function Home() {
       <HowItWorks />
       <Testimonials />
       <SellCta />
+      <div aria-hidden className="h-16 sm:h-20" />
     </>
   );
 }

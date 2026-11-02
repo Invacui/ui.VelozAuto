@@ -1,15 +1,24 @@
-import { useRef } from 'react';
-import { Link } from 'react-router-dom';
-import { useQuery } from '@tanstack/react-query';
-import { Car, Bike, Bus, Truck, Caravan, ArrowRight, BadgeCheck, type LucideIcon } from 'lucide-react';
-import gsap from 'gsap';
-import { Observer } from 'gsap/Observer';
-import { useGSAP } from '@gsap/react';
-import { Button } from '@/components/ui/button';
-import { listBanners } from '@/services/content.service';
-import { queryKeys } from '@/lib/queryKeys';
-import { ROUTES } from '@/constants/routes';
-import { VEHICLE_CATEGORIES } from '@/constants/vehicleEnums';
+import { useRef } from "react";
+import { Link } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
+import {
+  Car,
+  Bike,
+  Bus,
+  Truck,
+  Caravan,
+  ArrowRight,
+  BadgeCheck,
+  type LucideIcon,
+} from "lucide-react";
+import gsap from "gsap";
+import { Observer } from "gsap/Observer";
+import { useGSAP } from "@gsap/react";
+import { Button } from "@/components/ui/button";
+import { listBanners } from "@/services/content.service";
+import { queryKeys } from "@/lib/queryKeys";
+import { ROUTES } from "@/constants/routes";
+import { VEHICLE_CATEGORIES } from "@/constants/vehicleEnums";
 
 gsap.registerPlugin(useGSAP, Observer);
 
@@ -22,11 +31,11 @@ const CATEGORY_ICONS: Record<string, LucideIcon> = {
 };
 
 const CATEGORY_BRIEF: Record<string, string> = {
-  PASSENGER_CAR: 'Hatchbacks, sedans and premium cars.',
-  TWO_WHEELER: 'Bikes, scooters and mopeds.',
-  THREE_WHEELER: 'Passenger autos and e-rickshaws.',
-  COMMERCIAL: 'Trucks, buses and light commercial.',
-  CARAVAN_MOTORHOME: 'Caravans, campers and motorhomes.',
+  PASSENGER_CAR: "Hatchbacks, sedans and premium cars.",
+  TWO_WHEELER: "Bikes, scooters and mopeds.",
+  THREE_WHEELER: "Passenger autos and e-rickshaws.",
+  COMMERCIAL: "Trucks, buses and light commercial.",
+  CARAVAN_MOTORHOME: "Caravans, campers and motorhomes.",
 };
 
 // The card at the centre pops left to become the focus; others stay aligned.
@@ -47,8 +56,8 @@ export function CategoryShowcase() {
   const trackRef = useRef<HTMLDivElement>(null);
 
   const { data: banners = [] } = useQuery({
-    queryKey: queryKeys.content.banners('CATEGORIES'),
-    queryFn: () => listBanners('CATEGORIES'),
+    queryKey: queryKeys.content.banners("CATEGORIES"),
+    queryFn: () => listBanners("CATEGORIES"),
     staleTime: 10 * 60_000,
   });
 
@@ -73,15 +82,14 @@ export function CategoryShowcase() {
           Icon: CATEGORY_ICONS[c.value] ?? Car,
         }));
 
-  const signature = items.map((i) => i.id).join('|');
+  const signature = items.map((i) => i.id).join("|");
   const prefersReduced =
-    typeof window !== 'undefined' &&
-    window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   useGSAP(
     () => {
       const container = trackRef.current;
-      if (!container || prefersReduced) return;
+      if (!container || prefersReduced || !window.matchMedia("(min-width: 1024px)").matches) return;
 
       const state = { pos: 0 };
       let target = 0;
@@ -101,19 +109,19 @@ export function CategoryShowcase() {
       let setters: Setters[] = [];
 
       const measure = () => {
-        const list = gsap.utils.toArray<HTMLElement>('.cat-card', container);
+        const list = gsap.utils.toArray<HTMLElement>(".cat-card", container);
         if (!list.length) return list;
         n = list.length;
         containerH = container.clientHeight;
         cardH = list[0].offsetHeight;
         step = cardH + 84;
         setters = list.map((c) => ({
-          x: gsap.quickSetter(c, 'x', 'px') as (v: number) => void,
-          y: gsap.quickSetter(c, 'y', 'px') as (v: number) => void,
-          rotate: gsap.quickSetter(c, 'rotate', 'deg') as (v: number) => void,
-          scale: gsap.quickSetter(c, 'scale') as (v: number) => void,
-          opacity: gsap.quickSetter(c, 'opacity') as (v: number) => void,
-          z: gsap.quickSetter(c, 'zIndex') as (v: number) => void,
+          x: gsap.quickSetter(c, "x", "px") as (v: number) => void,
+          y: gsap.quickSetter(c, "y", "px") as (v: number) => void,
+          rotate: gsap.quickSetter(c, "rotate", "deg") as (v: number) => void,
+          scale: gsap.quickSetter(c, "scale") as (v: number) => void,
+          opacity: gsap.quickSetter(c, "opacity") as (v: number) => void,
+          z: gsap.quickSetter(c, "zIndex") as (v: number) => void,
         }));
         return list;
       };
@@ -137,11 +145,11 @@ export function CategoryShowcase() {
 
       const list = measure();
       gsap.set(list, {
-        position: 'absolute',
+        position: "absolute",
         top: 0,
-        left: '75%',
+        left: "75%",
         xPercent: -50,
-        transformOrigin: 'center center',
+        transformOrigin: "center center",
       });
       place();
 
@@ -150,7 +158,7 @@ export function CategoryShowcase() {
         gsap.to(state, {
           pos: target,
           duration: 0.45,
-          ease: 'power2.out',
+          ease: "power2.out",
           overwrite: true,
           onUpdate: place,
         });
@@ -158,7 +166,7 @@ export function CategoryShowcase() {
 
       const observer = Observer.create({
         target: container,
-        type: 'wheel',
+        type: "wheel",
         preventDefault: true,
         onWheel: (self) => {
           if (Math.abs(self.deltaY) < 1) return;
@@ -173,26 +181,27 @@ export function CategoryShowcase() {
         place();
       };
 
-      window.addEventListener('resize', onResize);
+      window.addEventListener("resize", onResize);
 
       return () => {
         observer.kill();
-        window.removeEventListener('resize', onResize);
+        window.removeEventListener("resize", onResize);
         clearTimeout(snapTimer);
       };
     },
-    { scope: sectionRef, dependencies: [signature] },
+    { scope: sectionRef, dependencies: [signature] }
   );
 
   const renderCard = (item: CardItem) => {
     const inner = (
-      <div className="overflow-hidden p-2  rounded-2xl bg-white shadow-[0_24px_60px_-24px_rgba(2,6,23,0.55)] ring-1 ring-black/5 transition-transform duration-300 group-hover:-translate-y-1">
+      <div className="overflow-hidden p-2 rounded-2xl bg-white shadow-md sm:shadow-[0_24px_60px_-24px_rgba(2,6,23,0.55)] ring-1 ring-black/5 transition-transform duration-300 group-hover:-translate-y-1">
         <div className="relative aspect-[16/10] rounded-2xl overflow-hidden bg-gradient-to-br from-blue-100 via-blue-50 to-white">
           {item.image ? (
             <img
               src={item.image}
               alt={item.title}
               loading="lazy"
+              draggable={false}
               className="h-full w-full object-cover"
             />
           ) : (
@@ -213,7 +222,7 @@ export function CategoryShowcase() {
       </div>
     );
 
-    const isExternal = item.link.startsWith('http');
+    const isExternal = item.link.startsWith("http");
     return isExternal ? (
       <a href={item.link} target="_blank" rel="noreferrer" className="group block">
         {inner}
@@ -229,12 +238,11 @@ export function CategoryShowcase() {
     <section id="categories" className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
       <div
         ref={sectionRef}
-        className="relative isolate overflow-hidden rounded-3xl bg-gradient-to-r from-[#013164] to-[#007bff]"
-      >
+        className="relative isolate overflow-hidden rounded-3xl bg-gradient-to-r from-[#013164] to-[#007bff]">
         <div className="pointer-events-none absolute -left-24 top-1/2 h-80 w-80 -translate-y-1/2 rounded-full bg-blue-400/20 blur-3xl" />
         <div className="pointer-events-none absolute -right-20 bottom-0 h-72 w-72 rounded-full bg-cyan-300/10 blur-3xl" />
 
-        <div className="relative grid items-center  gap-8 px-6 py-12 sm:px-10 lg:grid-cols-[1.1fr_1fr] lg:gap-10 lg:px-14 lg:py-16">
+        <div className="relative grid items-center py-12 sm:py-0 gap-8 px-6  sm:px-10 lg:grid-cols-[1.1fr_1fr] lg:gap-10 lg:px-14 ">
           {/* Left — static content */}
           <div className="text-white">
             <span className="inline-flex items-center gap-1.5 rounded-full border border-white/25 bg-white/10 px-3 py-1 text-xs font-bold text-white/90 backdrop-blur">
@@ -249,28 +257,38 @@ export function CategoryShowcase() {
               Explore every category, compare your options, and find the perfect vehicle for your
               journey — inspected, verified and ready to drive.
             </p>
-
           </div>
 
-          {/* Right — wheel-driven vertical curved carousel */}
-          <div className="relative ">
+          {/* Right — swipeable rail on mobile, wheel-driven vertical curved carousel on desktop */}
+          <div className="relative min-w-0 ">
             {prefersReduced ? (
-              <div className="mx-auto grid w-full max-w-md gap-4 sm:grid-cols-2">
+              <div className="mx-auto grid w-full max-w-md grid-cols-2 gap-4">
                 {items.map((item) => (
                   <div key={item.id}>{renderCard(item)}</div>
                 ))}
               </div>
             ) : (
-              <div
-                ref={trackRef}
-                className="relative sm:static mx-auto h-[440px] w-full max-w-md overflow-hidden sm:h-[520px] lg:h-[600px] lg:max-w-lg"
-              >
-                {items.map((item) => (
-                  <div key={item.id} className="cat-card group absolute top-0 left-1/2 w-[72%] will-change-transform">
-                    {renderCard(item)}
-                  </div>
-                ))}
-              </div>
+              <>
+                <div className="flex w-full max-w-full select-none touch-pan-x snap-x snap-mandatory gap-3 overflow-x-auto overscroll-x-contain pb-2 [-webkit-overflow-scrolling:touch] [-ms-overflow-style:none] [scrollbar-width:none] lg:hidden [&::-webkit-scrollbar]:hidden">
+                  {items.map((item) => (
+                    <div key={item.id} className="w-[250px] shrink-0 snap-start">
+                      {renderCard(item)}
+                    </div>
+                  ))}
+                </div>
+
+                <div
+                  ref={trackRef}
+                  className="relative mx-auto hidden h-[520px] w-full max-w-md  lg:block lg:h-[600px] lg:max-w-lg">
+                  {items.map((item) => (
+                    <div
+                      key={item.id}
+                      className="cat-card group absolute top-0 left-1/2 w-[72%] will-change-transform">
+                      {renderCard(item)}
+                    </div>
+                  ))}
+                </div>
+              </>
             )}
           </div>
         </div>

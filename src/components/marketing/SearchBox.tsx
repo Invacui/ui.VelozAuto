@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import { Search, Car, MapPin, IndianRupee } from "lucide-react";
+import { Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Combobox } from "@/components/ui/combobox";
@@ -25,15 +25,8 @@ const BUDGETS = [
   { value: "5000000", label: "Under ₹50 Lakh" },
 ];
 
-const Divider = () => (
-  <div className="flex items-center">
-    <div className="hidden h-6 w-px bg-gray-200 lg:block" />
-    <div className="my-2 h-px w-full bg-gray-100 lg:hidden" />
-  </div>
-);
-
-/** Reusable vehicle search form — pill-style matching the MRT aesthetic. */
-export function SearchBox({ className }: { className?: string }) {
+/** Reusable vehicle search form — rectangular, equal-height fields. */
+export function SearchBox({ className, glass = false }: { className?: string; glass?: boolean }) {
   const navigate = useNavigate();
   const [q, setQ] = useState("");
   const [category, setCategory] = useState("");
@@ -56,30 +49,26 @@ export function SearchBox({ className }: { className?: string }) {
     navigate(`${ROUTES.vehicles}?${params.toString()}`);
   };
 
-  const selectedCategory = VEHICLE_CATEGORIES.find((c) => c.value === category);
-  const selectedBudget = BUDGETS.find((b) => b.value === budget);
+  const field =
+    "flex h-10 items-center rounded-xl border border-black/5 bg-white shadow-sm transition-colors";
+  const trigger =
+    "!h-10 w-full rounded-xl border-0 bg-transparent px-3 py-0 text-sm text-gray-800 shadow-none ring-0 focus:ring-0 focus:ring-offset-0 data-placeholder:text-gray-400";
 
   return (
     <div className={className}>
-      <div className="relative z-20 mx-auto rounded-2xl border border-gray-100 bg-white shadow-xl lg:rounded-full">
-        <div className="flex flex-col items-stretch p-2 gap-2  lg:flex-row lg:items-center">
+      <div
+        className={`relative z-20 mx-auto rounded-xl border shadow-xl ${
+          glass
+            ? "border-white/40 bg-white/70 backdrop-blur-md supports-[backdrop-filter]:bg-white/60"
+            : "border-gray-100 bg-white"
+        }`}
+      >
+        <div className="grid grid-cols-2 gap-2 p-2 lg:grid-cols-[1fr_1fr_1fr_1fr_auto]">
           {/* Category */}
-          <div className="flex items-center rounded-full hover:bg-primary/5 lg:flex-1 lg:max-w-[200px]">
+          <div className={field}>
             <Select value={category} onValueChange={setCategory}>
-              <SelectTrigger className="group h-14! w-full rounded-full border-0 bg-transparent px-4 py-0 text-left shadow-none ring-0 focus:ring-0 focus:ring-offset-0 data-placeholder:text-gray-400 [&>svg]:h-4 [&>svg]:w-4 [&>svg]:text-gray-400 [&>svg]:transition-transform [&>svg]:duration-200 data-open:[&_svg]:rotate-180">
-                <div className="flex w-full   items-center gap-3 ">
-                  <Car className="hidden size-5 shrink-0 text-primary lg:block" />
-                  <div className="flex min-w-0 flex-1 flex-col ">
-                    <span className="text-[10px] font-bold uppercase tracking-wider text-gray-400">
-                      Category
-                    </span>
-                    <SelectValue className="block truncate text-sm font-semibold text-gray-800">
-                      <span className="truncate">
-                        {selectedCategory ? selectedCategory.label : "All categories"}
-                      </span>
-                    </SelectValue>
-                  </div>
-                </div>
+              <SelectTrigger className={trigger}>
+                <SelectValue placeholder="Category" />
               </SelectTrigger>
               <SelectContent>
                 {VEHICLE_CATEGORIES.map((c) => (
@@ -91,43 +80,11 @@ export function SearchBox({ className }: { className?: string }) {
             </Select>
           </div>
 
-          <Divider />
-
-          {/* City */}
-          <div className="flex items-center rounded-full hover:bg-primary/5 lg:flex-1 lg:max-w-[200px]">
-            <Combobox
-              value={city}
-              onChange={setCity}
-              options={cityOptions}
-              label="City"
-              icon={MapPin}
-              placeholder="Any city"
-              searchPlaceholder="Search city…"
-              emptyText="No city found."
-              popoverClassName="w-72"
-              className="h-14 w-full rounded-full border-0 bg-transparent px-4 py-0 text-left shadow-none hover:bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0"
-            />
-          </div>
-
-          <Divider />
-
           {/* Budget */}
-          <div className="flex items-center rounded-full hover:bg-primary/5 lg:flex-1 lg:max-w-[200px]">
+          <div className={field}>
             <Select value={budget} onValueChange={setBudget}>
-              <SelectTrigger className="group h-14! w-full rounded-full border-0 bg-transparent px-4 py-0 text-left shadow-none ring-0 focus:ring-0 focus:ring-offset-0 data-placeholder:text-gray-400 [&>svg]:h-4 [&>svg]:w-4 [&>svg]:text-gray-400 [&>svg]:transition-transform [&>svg]:duration-200 data-open:[&_svg]:rotate-180">
-                <div className="flex w-full items-center gap-3">
-                  <IndianRupee className="hidden size-5 shrink-0 text-primary lg:block" />
-                  <div className="flex min-w-0 flex-1 flex-col">
-                    <span className="text-[10px] font-bold uppercase tracking-wider text-gray-400">
-                      Budget
-                    </span>
-                    <SelectValue className="block truncate text-sm font-semibold text-gray-800">
-                      <span className="truncate">
-                        {selectedBudget ? selectedBudget.label : "Any budget"}
-                      </span>
-                    </SelectValue>
-                  </div>
-                </div>
+              <SelectTrigger className={trigger}>
+                <SelectValue placeholder="Budget" />
               </SelectTrigger>
               <SelectContent>
                 {BUDGETS.map((b) => (
@@ -138,25 +95,39 @@ export function SearchBox({ className }: { className?: string }) {
               </SelectContent>
             </Select>
           </div>
-          {/* Search keyword */}
-         
-            <div className="flex min-w-0 flex-1 flex-col rounded-full hover:bg-primary/5">
-              <Input
-                value={q}
-                onChange={(e) => setQ(e.target.value)}
-                onKeyDown={(e) => e.key === "Enter" && search()}
-                placeholder="Search by brand, model…"
-                className="h-14 w-full rounded-full border-0 bg-transparent px-4 text-sm font-semibold text-gray-800 shadow-none outline-none ring-0 placeholder:font-normal placeholder:text-gray-400 focus-visible:border-0 focus-visible:ring-0 focus-visible:ring-offset-0"
-              />
-            </div>
 
+          {/* City */}
+          <div className={field}>
+            <Combobox
+              value={city}
+              onChange={setCity}
+              options={cityOptions}
+              placeholder="City"
+              searchPlaceholder="Search city…"
+              emptyText="No city found."
+              popoverClassName="w-72"
+              className="h-10 w-full rounded-xl border-0 bg-transparent px-3 py-0 text-sm text-gray-800 shadow-none hover:bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0"
+            />
+          </div>
 
-          {/* Search button */}
+          {/* Keyword */}
+          <div className={field}>
+            <Input
+              value={q}
+              onChange={(e) => setQ(e.target.value)}
+              onKeyDown={(e) => e.key === "Enter" && search()}
+              placeholder="Brand, model…"
+              className="h-10 w-full rounded-xl border-0 bg-transparent px-3 py-0 text-sm font-medium text-gray-800 shadow-none outline-none ring-0 placeholder:font-normal placeholder:text-gray-400 focus-visible:border-0 focus-visible:ring-0 focus-visible:ring-offset-0"
+            />
+          </div>
+
+          {/* Search */}
           <Button
             onClick={search}
-            size="icon"
-            className="mt-2 ml-1 h-14 w-14 shrink-0 self-end rounded-full bg-primary shadow-md shadow-primary/30 hover:bg-primary/90 lg:mt-0">
-            <Search className="size-5" />
+            className="col-span-2 h-10 w-full gap-2 rounded-xl bg-primary text-sm font-semibold shadow-md shadow-primary/30 hover:bg-primary/90 lg:col-span-1 lg:w-10 lg:rounded-full lg:gap-0"
+          >
+            <Search className="size-4" />
+            <span className="lg:hidden">Search</span>
           </Button>
         </div>
       </div>

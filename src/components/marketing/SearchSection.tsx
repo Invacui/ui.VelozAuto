@@ -3,7 +3,6 @@ import {
   BadgeCheck, HandCoins, Sparkles, ArrowRight, Truck, ShieldCheck,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { SearchBox } from '@/components/marketing/SearchBox';
 import { ROUTES } from '@/constants/routes';
 import bus from '@/assets/bus.webp'
 /** Secondary section: headline, selling points and the mobile search form. */
@@ -47,11 +46,6 @@ export function SearchSection() {
                   <ArrowRight className="h-4 w-4" />
                 </Link>
               </Button>
-            </div>
-
-            {/* Search box — mobile only (desktop reveals it from the hero) */}
-            <div className="lg:hidden">
-              <SearchBox className="mt-6" />
             </div>
           </div>
 

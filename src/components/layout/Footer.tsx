@@ -4,6 +4,7 @@ import { Facebook, Instagram, Linkedin, Youtube, Phone, Mail, MapPin } from 'luc
 import { getSiteSettings } from '@/services/content.service';
 import { queryKeys } from '@/lib/queryKeys';
 import { ROUTES } from '@/constants/routes';
+import { SUPPORT_EMAIL } from '@/lib/seo';
 import logoImage from '@/assets/logo.png';
 
 const linkGroups = [
@@ -51,6 +52,7 @@ export function Footer() {
   });
 
   const social = settings?.social || {};
+  const supportEmail = settings?.email || SUPPORT_EMAIL;
 
   return (
     <footer className="mt-16 border-t border-white/10 bg-black text-white">
@@ -116,9 +118,9 @@ export function Footer() {
                 <Phone className="h-4 w-4" /> {settings.phone}
               </span>
             )}
-            {settings?.email && (
+            {supportEmail && (
               <span className="inline-flex items-center gap-1.5">
-                <Mail className="h-4 w-4" /> {settings.email}
+                <Mail className="h-4 w-4" /> {supportEmail}
               </span>
             )}
             {settings?.address && (
