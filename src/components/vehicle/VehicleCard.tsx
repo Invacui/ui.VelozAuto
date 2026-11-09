@@ -89,7 +89,23 @@ export function VehicleCard({ vehicle, onWishlistToggle, isWishlisted }: Props) 
             {vehicle.variant ? ` ${vehicle.variant}` : ''}
           </Link>
         </div>
-        <div className="text-lg font-bold text-foreground">{formatINRCompact(vehicle.price)}</div>
+        <div className="text-lg font-bold text-foreground">
+          {vehicle.isRateOnRequest || vehicle.price == null ? (
+            <span className="text-base">Rate on request</span>
+          ) : vehicle.priceMax != null && vehicle.priceMax > vehicle.price ? (
+            <>{formatINRCompact(vehicle.price)} – {formatINRCompact(vehicle.priceMax)}</>
+          ) : (
+            formatINRCompact(vehicle.price)
+          )}
+        </div>
+        {(vehicle.isRateOnRequest || vehicle.price == null) && (
+          <Link
+            to={ROUTES.vehicleDetail(vehicle.slug)}
+            className="text-xs font-semibold text-primary hover:underline"
+          >
+            Get quote →
+          </Link>
+        )}
         <div className="flex flex-wrap gap-x-3 gap-y-1 text-xs text-muted-foreground">
           <span className="inline-flex items-center gap-1">
             <Calendar className="h-3 w-3" /> {vehicle.manufacturingYear}

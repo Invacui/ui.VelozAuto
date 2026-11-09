@@ -102,6 +102,10 @@
     z-index: 2;
   }
 
+  .btn-primary-rounded {
+    @apply bg-primary text-primary-foreground rounded-full px-4 py-2 active:scale-95 transition-transform duration-200;
+  }
+
   .marquee-logos__fade-left {
     left: 0;
     background: linear-gradient(to right, hsl(var(--background)), transparent);

@@ -21,7 +21,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { BUDGET_RANGES } from '@/constants/vehicleEnums';
 import { getApiErrorMessage, formatINRCompact } from '@/lib/utils';
 import type { Vehicle, VehicleCard } from '@/types/vehicle.types';
-import type { CreateBuyRequestDto } from '@/types/buyRequest.types';
+import type { BuyRequestType, CreateBuyRequestDto } from '@/types/buyRequest.types';
 
 const schema = z.object({
   name: z.string().trim().min(2, 'Please enter your name'),
@@ -43,9 +43,10 @@ interface BuyRequestModalProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   vehicle: Vehicle | VehicleCard;
+  requestType?: BuyRequestType;
 }
 
-export function BuyRequestModal({ open, onOpenChange, vehicle }: BuyRequestModalProps) {
+export function BuyRequestModal({ open, onOpenChange, vehicle, requestType = 'ENQUIRY' }: BuyRequestModalProps) {
   const { user } = useAuth();
   const vehicleId = vehicle.id || (vehicle as Vehicle)._id!;
 
@@ -87,6 +88,7 @@ export function BuyRequestModal({ open, onOpenChange, vehicle }: BuyRequestModal
         phone: values.phone,
         email: values.email || undefined,
         city: values.city || undefined,
+        requestType,
         budget: (values.budget as CreateBuyRequestDto['budget']) || undefined,
         needsFinance: values.needsFinance,
         wantsTestDrive: values.wantsTestDrive,
@@ -131,9 +133,9 @@ export function BuyRequestModal({ open, onOpenChange, vehicle }: BuyRequestModal
         ) : (
           <>
             <DialogHeader>
-              <DialogTitle>Enquire / Buy request</DialogTitle>
+              <DialogTitle>{requestType === 'PRICE_DISCLOSURE' ? 'Get a quote' : 'Enquire / Buy request'}</DialogTitle>
               <DialogDescription>
-                {vehicle.title} · {formatINRCompact(vehicle.price)}
+                {vehicle.title} · {vehicle.isRateOnRequest || vehicle.price == null ? 'Rate on request' : formatINRCompact(vehicle.price)}
               </DialogDescription>
             </DialogHeader>
 

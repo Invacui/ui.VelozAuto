@@ -496,7 +496,7 @@ export function Header() {
             </span>
             <span
               className={cn(
-                "hidden font-Incompleeta mb-1.5 text-xl leading-none tracking-wide transition-colors duration-300 sm:flex sm:h-16 sm:items-center !text-primary ",
+                "font-Incompleeta mb-1.5 text-xl leading-none tracking-wide transition-colors duration-300 sm:flex sm:h-16 sm:items-center !text-primary ",
                 textColor
               )}>
               VELOZ AUTO

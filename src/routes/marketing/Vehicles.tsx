@@ -1,7 +1,9 @@
 import { useMemo, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
-import { SlidersHorizontal, Search, X } from 'lucide-react';
+import { useAppSelector } from '@/store/hooks';
+import { selectCompare } from '@/store/compare.slice';
+import { SlidersHorizontal, Search, X, GitCompare } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import {
@@ -29,8 +31,8 @@ const SORTS = [
 ];
 
 const FILTER_KEYS = [
-  'category', 'usageType', 'subCategory', 'bodyType', 'brand', 'fuelType', 'transmission',
-  'ownerCount', 'bsNorm', 'state', 'city', 'minPrice', 'maxPrice', 'minYear', 'maxYear',
+  'category', 'usageType', 'subCategory', 'brand', 'fuelType', 'transmission',
+  'ownerCount', 'state', 'city', 'minPrice', 'maxPrice', 'minYear', 'maxYear',
   'minKm', 'maxKm', 'isInspected', 'isFeatured',
 ] as const;
 
@@ -38,6 +40,8 @@ export default function Vehicles() {
   const [searchParams, setSearchParams] = useSearchParams();
   const [qInput, setQInput] = useState(searchParams.get('q') || '');
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
+
+  const compareItems = useAppSelector(selectCompare);
 
   const filters: Filters = useMemo(() => {
     const f: Filters = {};
@@ -211,6 +215,14 @@ export default function Vehicles() {
             )}
           </div>
         </div>
+      </div>
+
+      <div className="fixed bottom-20 left-1/2 z-50 -translate-x-1/2 md:hidden">
+        <Button asChild className="h-12 rounded-full bg-primary px-6 shadow-[0_20px_50px_-20px_rgba(2,6,23,0.45)">
+          <Link to={ROUTES.compare}>
+            <GitCompare className="mr-1 h-4 w-4" /> Compare
+          </Link>
+        </Button>
       </div>
     </>
   );

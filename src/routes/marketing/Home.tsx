@@ -1,6 +1,7 @@
 import { lazy, Suspense, type ReactNode } from 'react';
 import { SEO } from '@/components/common/SEO';
 import { HeroSection } from '@/components/marketing/HeroSection';
+import { HeroSectionMobile } from '@/components/marketing/HeroSectionMobile';
 import { SectionGutter } from '@/components/marketing/SectionGutter';
 import { SITE_URL, SITE_NAME, DEFAULT_DESCRIPTION } from '@/lib/seo';
 
@@ -39,9 +40,10 @@ export default function Home() {
 
       <SectionGutter />
 
-      <HeroSection />
+      <div className="hidden lg:block"><HeroSection /></div>
+      <div className="lg:hidden"><HeroSectionMobile /></div>
       {withSection(<BuySellPromo />)}
-      {withSection(<Featured />)}
+      <div className="hidden md:block">{withSection(<Featured />)}</div>
       {withSection(<CategoryShowcase />)}
       {withSection(<SearchSection />)}
       {withSection(<Brands />)}

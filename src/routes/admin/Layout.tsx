@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { Outlet } from 'react-router-dom';
 import {
   LayoutDashboard, Car, ShoppingBag, BadgeIndianRupee, Database, Users,
@@ -39,11 +40,20 @@ export function AdminLayout() {
   const { isAdmin } = useAuth();
   useAdminSocket(isAdmin);
 
+  useEffect(() => {
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+
+    return () => {
+      document.body.style.overflow = previousOverflow;
+    };
+  }, []);
+
   const visibleMainNav = isAdmin ? mainNavItems : mainNavItems.slice(0, 2);
   const visibleBottomNav = isAdmin ? bottomNavItems : [];
 
   return (
-    <div className="flex h-screen overflow-hidden bg-muted/20">
+    <div className="flex h-screen min-h-0 overflow-hidden bg-muted/20">
       <ScrollToTop />
       <DashboardSidebar
         brand="Veloz Auto"
@@ -51,9 +61,9 @@ export function AdminLayout() {
         mainNavItems={visibleMainNav}
         bottomNavItems={visibleBottomNav}
       />
-      <div className="flex min-w-0 flex-1 flex-col">
+      <div className="flex min-h-0 min-w-0 flex-1 flex-col">
         <DashboardTopbar />
-        <main className="flex-1 overflow-y-auto p-4 pb-20 scrollbar-thin md:p-6 md:pb-6">
+        <main className="min-h-0 flex-1 overflow-y-auto p-4 pb-20 scrollbar-thin md:p-6 md:pb-6">
           <Outlet />
         </main>
       </div>

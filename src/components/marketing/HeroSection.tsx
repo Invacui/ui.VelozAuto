@@ -120,7 +120,7 @@ export function HeroSection() {
 
       <div className="relative mx-auto w-full max-w-7xl px-4 max-lg:flex max-lg:flex-1 max-lg:flex-col sm:px-6 lg:px-8">
         {/* Big hollow brand wordmark — centered at the top */}
-        <span className="relative z-10 flex h-20 w-full items-center justify-center text-5xl font-Incompleeta font-bold tracking-wide text-primary/10 sm:h-32 sm:text-[150px]">
+        <span className="relative z-10 flex h-20 w-full items-center justify-center text-5xl font-Incompleeta font-bold tracking-wide text-primary/40 sm:h-32 sm:text-[150px]">
           VELOZ AUTO
         </span>
 

@@ -12,8 +12,8 @@ import { getFiltersMeta } from '@/services/vehicle.service';
 import { listLocations } from '@/services/master.service';
 import { queryKeys } from '@/lib/queryKeys';
 import {
-  VEHICLE_CATEGORIES, USAGE_TYPES, COMMERCIAL_SUBCATEGORIES, BODY_TYPES_BY_CATEGORY,
-  FUEL_TYPES, TRANSMISSIONS, OWNER_COUNTS, BS_NORMS,
+  VEHICLE_CATEGORIES, USAGE_TYPES, COMMERCIAL_SUBCATEGORIES,
+  FUEL_TYPES, TRANSMISSIONS, OWNER_COUNTS,
 } from '@/constants/vehicleEnums';
 import { titleCase } from '@/lib/utils';
 import type { VehicleListParams } from '@/types/vehicle.types';
@@ -42,10 +42,6 @@ export function VehicleFilters({ filters, onChange, onClear, variant = 'sidebar'
   const { data: meta } = useQuery({ queryKey: queryKeys.vehicles.filtersMeta(), queryFn: getFiltersMeta });
   const { data: locations } = useQuery({ queryKey: queryKeys.master.locations(), queryFn: listLocations });
 
-  const bodyTypes = filters.category
-    ? BODY_TYPES_BY_CATEGORY[filters.category] || meta?.bodyTypes || []
-    : meta?.bodyTypes || [];
-
   const states = (locations ?? []).map((l) => l.state);
   const cities = filters.state
     ? locations?.find((l) => l.state === filters.state)?.cities.map((c) => c.name) || []
@@ -67,7 +63,7 @@ export function VehicleFilters({ filters, onChange, onClear, variant = 'sidebar'
       <FilterGroup bar={bar} label="Category">
         <Combobox
           value={selectValue(filters.category)}
-          onChange={(v) => onChange({ category: (v === ALL ? undefined : v) as any, subCategory: undefined, bodyType: undefined })}
+          onChange={(v) => onChange({ category: (v === ALL ? undefined : v) as any, subCategory: undefined })}
           options={withAll('All categories', VEHICLE_CATEGORIES.map((c) => ({ value: c.value, label: c.label })))}
           placeholder="All categories"
           searchPlaceholder="Search category…"
@@ -95,20 +91,6 @@ export function VehicleFilters({ filters, onChange, onClear, variant = 'sidebar'
               <SelectItem value={ALL}>Any sub-category</SelectItem>
               {COMMERCIAL_SUBCATEGORIES.map((s) => (
                 <SelectItem key={s} value={s}>{titleCase(s)}</SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </FilterGroup>
-      )}
-
-      {bodyTypes.length > 0 && (
-        <FilterGroup bar={bar} label="Body type">
-          <Select value={selectValue(filters.bodyType)} onValueChange={(v) => onChange({ bodyType: v === ALL ? undefined : v })}>
-            <SelectTrigger><SelectValue placeholder="Any body type" /></SelectTrigger>
-            <SelectContent>
-              <SelectItem value={ALL}>Any body type</SelectItem>
-              {bodyTypes.map((b) => (
-                <SelectItem key={b} value={b}>{titleCase(b)}</SelectItem>
               ))}
             </SelectContent>
           </Select>
@@ -157,18 +139,6 @@ export function VehicleFilters({ filters, onChange, onClear, variant = 'sidebar'
             <SelectItem value={ALL}>Any number of owners</SelectItem>
             {OWNER_COUNTS.map((o) => (
               <SelectItem key={o.value} value={o.value}>{o.label}</SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-      </FilterGroup>
-
-      <FilterGroup bar={bar} label="BS norm">
-        <Select value={selectValue(filters.bsNorm)} onValueChange={(v) => onChange({ bsNorm: v === ALL ? undefined : v })}>
-          <SelectTrigger><SelectValue placeholder="Any BS norm" /></SelectTrigger>
-          <SelectContent>
-            <SelectItem value={ALL}>Any BS norm</SelectItem>
-            {BS_NORMS.map((b) => (
-              <SelectItem key={b} value={b}>{titleCase(b)}</SelectItem>
             ))}
           </SelectContent>
         </Select>

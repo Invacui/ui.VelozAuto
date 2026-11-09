@@ -66,6 +66,7 @@ const AdminLayout = lazy(() =>
 
 const NotFound = lazy(() => import('@/routes/NotFound'));
 const ErrorPage = lazy(() => import('@/routes/ErrorPage'));
+// const Test =  lazy(()=> import('@/Test').then((res)=>({default:res.Test})))
 
 export const router = createBrowserRouter([
   {
@@ -74,6 +75,7 @@ export const router = createBrowserRouter([
     errorElement: withSuspense(<ErrorPage />),
     children: [
       { index: true, element: <Home /> },
+      // {path:'/test' , element:withSuspense(<Test />)},
       { path: 'vehicles', element: withSuspense(<Vehicles />) },
       { path: 'vehicles/:slug', element: withSuspense(<VehicleDetail />) },
       { path: 'compare', element: withSuspense(<Compare />) },

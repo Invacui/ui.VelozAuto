@@ -14,9 +14,8 @@ import { cn, formatCurrency, formatINRCompact, formatKm, titleCase } from '@/lib
 import type { Vehicle } from '@/types/vehicle.types';
 
 const ROWS: { label: string; get: (v: Vehicle) => string | number | null | undefined }[] = [
-  { label: 'Price', get: (v) => formatCurrency(v.price) },
+  { label: 'Price', get: (v) => (v.isRateOnRequest ? 'Rate on request' : formatCurrency(v.price)) },
   { label: 'Category', get: (v) => CATEGORY_LABELS[v.category] || titleCase(v.category) },
-  { label: 'Body type', get: (v) => titleCase(v.bodyType) },
   { label: 'Year', get: (v) => v.manufacturingYear },
   { label: 'KM driven', get: (v) => formatKm(v.kmDriven) },
   { label: 'Fuel', get: (v) => titleCase(v.fuelType) },
@@ -27,7 +26,6 @@ const ROWS: { label: string; get: (v: Vehicle) => string | number | null | undef
   { label: 'Power (bhp)', get: (v) => v.powerBhp },
   { label: 'Mileage (kmpl)', get: (v) => v.mileageKmpl },
   { label: 'Colour', get: (v) => v.color },
-  { label: 'Registered state', get: (v) => v.registrationState },
   { label: 'Accident history', get: (v) => titleCase(v.accidentHistory) },
   { label: 'Inspection score', get: (v) => (v.inspectionScore != null ? `${v.inspectionScore}/100` : null) },
   { label: 'Location', get: (v) => [v.locationCity, v.locationState].filter(Boolean).join(', ') },

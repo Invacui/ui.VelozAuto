@@ -26,7 +26,6 @@ export interface VehicleModel {
   name: string;
   slug: string;
   category: string;
-  bodyTypes?: string[];
   fuelOptions?: string[];
   transmissionOptions?: string[];
   priceRange?: { min?: number; max?: number };
@@ -37,7 +36,6 @@ export interface VehicleModelInput {
   brand: string;
   name: string;
   category: string;
-  bodyTypes?: string[];
   fuelOptions?: string[];
   transmissionOptions?: string[];
   priceRange?: { min?: number; max?: number };

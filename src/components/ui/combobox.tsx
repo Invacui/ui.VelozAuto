@@ -1,6 +1,6 @@
 import * as React from "react";
 import { useState } from "react";
-import { CheckIcon, ChevronDownIcon, SearchIcon } from "lucide-react";
+import { CheckIcon, ChevronDownIcon, PlusIcon, SearchIcon } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Input } from "@/components/ui/input";
@@ -25,6 +25,8 @@ interface ComboboxProps {
   popoverClassName?: string;
   disabled?: boolean;
   align?: "start" | "center" | "end";
+  /** When set, renders a "+ Add" action that calls back with the raw label. */
+  onCreate?: (label: string) => void;
 }
 
 /**
@@ -44,11 +46,15 @@ export function Combobox({
   popoverClassName,
   disabled,
   align = "start",
+  onCreate,
 }: ComboboxProps) {
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
 
-  const selected = options.find((o) => o.value === value);
+  const selected =
+    options.find((o) => o.value === value) ||
+    options.find((o) => o.label === value) ||
+    (value ? { value, label: value } : undefined);
 
   const filtered = React.useMemo(() => {
     const q = query.trim().toLowerCase();
@@ -149,9 +155,9 @@ export function Combobox({
           {filtered.length === 0 ? (
             <p className="py-6 text-center text-sm text-muted-foreground">{emptyText}</p>
           ) : (
-            filtered.map((o) => (
+            filtered.map((o, i) => (
               <button
-                key={o.value}
+                key={`${o.value}-${i}`}
                 type="button"
                 onClick={() => choose(o.value)}
                 className={cn(
@@ -165,6 +171,18 @@ export function Combobox({
                 <span className="truncate">{o.label}</span>
               </button>
             ))
+          )}
+          {onCreate && (
+            <button
+              key="combobox-create-new"
+              type="button"
+              onClick={() => onCreate(query.trim() || (value ?? ''))}
+              disabled={!query.trim() && !value}
+              className="mt-1 flex w-full items-center gap-2 border-t px-2 pt-2 pb-1.5 text-left text-sm font-medium text-primary transition-colors hover:bg-accent disabled:pointer-events-none disabled:opacity-50"
+            >
+              <PlusIcon className="size-4 shrink-0" />
+              <span className="truncate">Add &quot;{query.trim() || value || 'new'}&quot;</span>
+            </button>
           )}
         </div>
       </PopoverContent>

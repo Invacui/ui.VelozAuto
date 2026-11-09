@@ -29,27 +29,8 @@ export const COMMERCIAL_SUBCATEGORIES = [
   'CONSTRUCTION_EQUIPMENT',
 ];
 
-export const BODY_TYPES_BY_CATEGORY: Record<string, string[]> = {
-  PASSENGER_CAR: ['HATCHBACK', 'SEDAN', 'SUV', 'MUV', 'COUPE', 'CONVERTIBLE', 'PICKUP', 'VAN'],
-  TWO_WHEELER: ['MOTORCYCLE', 'SCOOTER', 'MOPED', 'BICYCLE_EV'],
-  THREE_WHEELER: ['PASSENGER_AUTO', 'E_RICKSHAW', 'GOODS_CARRIER'],
-  COMMERCIAL: [
-    'OPEN_BODY',
-    'CLOSED_CONTAINER',
-    'TIPPER',
-    'TANKER',
-    'FLATBED',
-    'REFRIGERATED',
-    'CAR_CARRIER',
-    'TRAILER',
-    'CHASSIS_ONLY',
-  ],
-  CARAVAN_MOTORHOME: ['VANITY_VAN', 'MOTORHOME', 'CAMPER_TRAILER'],
-};
-
 export const FUEL_TYPES = ['PETROL', 'DIESEL', 'CNG', 'LPG', 'ELECTRIC', 'HYBRID', 'PETROL_CNG', 'PETROL_LPG'];
 export const TRANSMISSIONS = ['MANUAL', 'AUTOMATIC', 'AMT', 'CVT', 'DCT', 'IMT'];
-export const BS_NORMS = ['BS3', 'BS4', 'BS6', 'BS6_PHASE_2', 'ELECTRIC_NA'];
 export const OWNER_COUNTS: { value: OwnerCount; label: string }[] = [
   { value: '1ST', label: '1st Owner' },
   { value: '2ND', label: '2nd Owner' },
@@ -63,9 +44,8 @@ export const VEHICLE_STATUSES: { value: VehicleStatus; label: string }[] = [
   { value: 'SOLD', label: 'Sold' },
   { value: 'INACTIVE', label: 'Inactive' },
 ];
-export const ROAD_TAX_TYPES = ['LIFETIME', 'PAID_TILL_DATE', 'NOT_PAID'];
 export const ACCIDENT_HISTORY = ['NONE', 'MINOR', 'MAJOR'];
-export const TYRE_CONDITIONS = ['NEW', 'GOOD', 'AVERAGE', 'NEEDS_REPLACEMENT'];
+export const TYRE_CONDITIONS = ['EXCELLENT', 'GOOD', 'AVERAGE', 'NEEDS_REPLACEMENT'];
 
 /** Overall vehicle condition options shown on the streamlined sell form. */
 export const VEHICLE_CONDITIONS: { value: string; label: string }[] = [

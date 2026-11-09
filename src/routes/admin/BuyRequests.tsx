@@ -103,7 +103,12 @@ export default function AdminBuyRequests() {
       key: 'vehicle',
       header: 'Vehicle',
       render: (r) => (
-        <span className="text-sm">{(r.vehicle && typeof r.vehicle === 'object' && (r.vehicle as any).title) || '—'}</span>
+        <span className="text-sm">
+          {(r.vehicle && typeof r.vehicle === 'object' && (r.vehicle as any).title) || '—'}
+          {r.requestType === 'PRICE_DISCLOSURE' ? (
+            <span className="ml-2 inline-flex rounded bg-amber-100 px-1.5 py-0.5 text-[10px] font-semibold text-amber-800">Quote</span>
+          ) : null}
+        </span>
       ),
     },
     { key: 'city', header: 'City', render: (r) => r.city || '—' },

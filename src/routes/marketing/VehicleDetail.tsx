@@ -1,9 +1,9 @@
 import { useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import {
-  Heart, Share2, MapPin, Gauge, Fuel, Calendar, Cog, User, ShieldCheck,
-  Phone, MessageSquare, CheckCircle2, Info, Scale, Star,
+  Heart, Share2, MapPin, Gauge, Fuel, Calendar, Cog, User, ShieldCheck, GitCompare,
+  Phone, MessageSquare, CheckCircle2, Info, Star,
 } from 'lucide-react';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
@@ -24,15 +24,18 @@ import { ROUTES } from '@/constants/routes';
 import { SITE_URL } from '@/lib/seo';
 import { CATEGORY_LABELS } from '@/constants/vehicleEnums';
 import {
-  cn, formatCurrency, formatINRCompact, formatKm, maskRegNumber, titleCase,
+  cn, formatCurrency, formatINRCompact, formatKm, titleCase,
 } from '@/lib/utils';
 import type { Vehicle } from '@/types/vehicle.types';
+import type { BuyRequestType } from '@/types/buyRequest.types';
 
 export default function VehicleDetail() {
   const { slug = '' } = useParams();
   const { isAuthenticated } = useAuth();
   const qc = useQueryClient();
+  const navigate = useNavigate();
   const [buyOpen, setBuyOpen] = useState(false);
+  const [requestType, setRequestType] = useState<BuyRequestType>('ENQUIRY');
 
   const { data: vehicle, isLoading, isError } = useQuery({
     queryKey: queryKeys.vehicles.slug(slug),
@@ -105,6 +108,15 @@ export default function VehicleDetail() {
     }
   };
 
+  const openRequest = (type: BuyRequestType) => {
+    if (type === 'PRICE_DISCLOSURE' && !isAuthenticated) {
+      navigate(`${ROUTES.login}?redirect=${encodeURIComponent(window.location.pathname)}`);
+      return;
+    }
+    setRequestType(type);
+    setBuyOpen(true);
+  };
+
   const specGroups: { title: string; rows: [string, string | number | null | undefined][] }[] = [
     {
       title: 'Core details',
@@ -112,14 +124,12 @@ export default function VehicleDetail() {
         ['Category', CATEGORY_LABELS[v.category] || titleCase(v.category)],
         ['Usage type', titleCase(v.usageType)],
         ['Sub-category', v.subCategory ? titleCase(v.subCategory) : undefined],
-        ['Body type', v.bodyType ? titleCase(v.bodyType) : undefined],
         ['Brand', v.brandName],
         ['Model', v.model],
         ['Variant', v.variant],
         ['Manufactured', v.manufacturingYear],
         ['Colour', v.color],
         ['Seats', v.seats],
-        ['Number of keys', v.numberOfKeys],
       ],
     },
     {
@@ -127,32 +137,13 @@ export default function VehicleDetail() {
       rows: [
         ['Fuel type', titleCase(v.fuelType)],
         ['Transmission', titleCase(v.transmission)],
-        ['BS norm', v.bsNorm ? titleCase(v.bsNorm) : undefined],
         ['Engine capacity', v.engineCapacityCc ? `${v.engineCapacityCc} cc` : undefined],
         ['Power', v.powerBhp ? `${v.powerBhp} bhp` : undefined],
         ['Torque', v.torqueNm ? `${v.torqueNm} Nm` : undefined],
         ['Mileage', v.mileageKmpl ? `${v.mileageKmpl} kmpl` : undefined],
         ['Battery capacity', v.batteryCapacityKwh ? `${v.batteryCapacityKwh} kWh` : undefined],
-        ['Range', v.rangeKm ? `${v.rangeKm} km` : undefined],
         ['KM driven', formatKm(v.kmDriven)],
         ['Owners', v.ownerCount ? titleCase(v.ownerCount) : undefined],
-      ],
-    },
-    {
-      title: 'Registration & legal',
-      rows: [
-        ['Registration no.', maskRegNumber(v.registrationNumber)],
-        ['Registered state', v.registrationState],
-        ['RTO code', v.rtoCode],
-        ['Registration city', v.registrationCity],
-        ['Registration type', v.registrationType ? titleCase(v.registrationType) : undefined],
-        ['RC available', v.rcAvailable ? 'Yes' : 'No'],
-        ['RC type', v.rcType ? titleCase(v.rcType) : undefined],
-        ['Ownership transfer', v.ownershipTransferStatus ? titleCase(v.ownershipTransferStatus) : undefined],
-        ['Road tax', v.roadTax ? titleCase(v.roadTax) : undefined],
-        ['Road tax valid till', v.roadTaxValidTill],
-        ['Permit type', v.permitType ? titleCase(v.permitType) : undefined],
-        ['FASTag', v.fastagInstalled ? 'Installed' : 'Not installed'],
       ],
     },
     {
@@ -161,7 +152,6 @@ export default function VehicleDetail() {
         ['Accident history', v.accidentHistory ? titleCase(v.accidentHistory) : undefined],
         ['Flood damaged', v.floodDamage ? 'Yes' : 'No'],
         ['Service history', v.serviceHistoryAvailable ? 'Available' : 'Not available'],
-        ['Last service', v.lastServiceDate],
         ['Tyre condition', v.tyreCondition ? titleCase(v.tyreCondition) : undefined],
         ['Modifications', v.modifications],
         ['Inspection score', v.inspectionScore != null ? `${v.inspectionScore}/100` : undefined],
@@ -180,8 +170,6 @@ export default function VehicleDetail() {
         ['Axle configuration', v.axleConfiguration ? titleCase(v.axleConfiguration) : undefined],
         ['Tyres', v.numberOfTyres],
         ['Wheelbase', v.wheelbaseMm ? `${v.wheelbaseMm} mm` : undefined],
-        ['Body length', v.bodyLengthFt ? `${v.bodyLengthFt} ft` : undefined],
-        ['Cabin type', v.cabinType ? titleCase(v.cabinType) : undefined],
         ['Fuel tank', v.tankCapacityLitres ? `${v.tankCapacityLitres} L` : undefined],
         ['Seating capacity', v.seatingCapacity],
         ['AC', v.hasAc ? 'Yes' : 'No'],
@@ -194,7 +182,6 @@ export default function VehicleDetail() {
     specGroups.push({
       title: 'Caravan / motorhome',
       rows: [
-        ['Sleeping capacity', v.sleepingCapacity],
         ['Kitchenette', v.hasKitchenette ? 'Yes' : 'No'],
         ['Toilet', v.hasToilet ? 'Yes' : 'No'],
         ['Generator', v.hasGenerator ? 'Yes' : 'No'],
@@ -203,7 +190,6 @@ export default function VehicleDetail() {
         ['Awning', v.awning ? 'Yes' : 'No'],
         ['Build type', v.buildType ? titleCase(v.buildType) : undefined],
         ['RTO modification', v.rtoModificationApproved ? 'Approved' : 'Not approved'],
-        ['Dimensions', [v.lengthFt, v.widthFt, v.heightFt].every(Boolean) ? `${v.lengthFt} × ${v.widthFt} × ${v.heightFt} ft` : undefined],
       ],
     });
   }
@@ -226,7 +212,7 @@ export default function VehicleDetail() {
 
   return (
     <>
-      <SEO title={title} description={v.description || `${title} — ${formatINRCompact(v.price)}`} image={v.images?.[0]?.url} type="product" jsonLd={productJsonLd} />
+      <SEO title={title} description={v.description || `${title} — ${v.isRateOnRequest || v.price == null ? 'Rate on request' : formatINRCompact(v.price)}`} image={v.images?.[0]?.url} type="product" jsonLd={productJsonLd} />
 
       <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
         <nav className="text-xs text-muted-foreground">
@@ -258,7 +244,6 @@ export default function VehicleDetail() {
                   { icon: User, label: 'Owners', value: v.ownerCount ? titleCase(v.ownerCount) : '—' },
                   { icon: Star, label: 'Colour', value: v.color || '—' },
                   { icon: MapPin, label: 'Location', value: location || '—' },
-                  { icon: Scale, label: 'Body type', value: v.bodyType ? titleCase(v.bodyType) : '—' },
                 ].map(({ icon: Icon, label, value }) => (
                   <div key={label} className="flex items-center gap-2">
                     <Icon className="h-4 w-4 shrink-0 text-muted-foreground" />
@@ -335,18 +320,35 @@ export default function VehicleDetail() {
             <Card>
               <CardContent className="space-y-3">
                 <div>
-                  <p className="text-2xl font-bold">{formatINRCompact(v.price)}</p>
-                  <p className="text-xs text-muted-foreground">{formatCurrency(v.price)}</p>
-                  {v.isPriceNegotiable && <Badge variant="success" className="mt-1">Price negotiable</Badge>}
+                  {v.isRateOnRequest || v.price == null ? (
+                    <>
+                      <p className="text-2xl font-bold">Rate on request</p>
+                      <p className="text-xs text-muted-foreground">Request a quote to see the price</p>
+                    </>
+                  ) : (
+                    <>
+                      <p className="text-2xl font-bold">
+                        {v.priceMax != null && v.priceMax > v.price
+                          ? `${formatINRCompact(v.price)} – ${formatINRCompact(v.priceMax)}`
+                          : formatINRCompact(v.price)}
+                      </p>
+                      <p className="text-xs text-muted-foreground">
+                        {v.priceMax != null && v.priceMax > v.price
+                          ? `${formatCurrency(v.price)} – ${formatCurrency(v.priceMax)}`
+                          : formatCurrency(v.price)}
+                      </p>
+                      {v.isPriceNegotiable && <Badge variant="success" className="mt-1">Price negotiable</Badge>}
+                    </>
+                  )}
                 </div>
-                {v.emiStartingFrom && (
-                  <p className="text-sm text-muted-foreground">
-                    EMI from <span className="font-semibold text-foreground">{formatCurrency(v.emiStartingFrom)}/mo</span>
-                  </p>
-                )}
                 <div className="flex flex-col gap-2">
-                  <Button size="lg" className="h-11" onClick={() => setBuyOpen(true)}>
-                    <MessageSquare className="mr-1 h-4 w-4" /> Enquire / Buy request
+                  <Button
+                    size="lg"
+                    className="h-11"
+                    onClick={() => openRequest(v.isRateOnRequest || v.price == null ? 'PRICE_DISCLOSURE' : 'ENQUIRY')}
+                  >
+                    <MessageSquare className="mr-1 h-4 w-4" />
+                    {v.isRateOnRequest || v.price == null ? 'Get quote' : 'Enquire / Buy request'}
                   </Button>
                   <div className="flex gap-2">
                     <Button variant="outline" className="flex-1" onClick={() => wishlistMutation.mutate()}>
@@ -357,6 +359,11 @@ export default function VehicleDetail() {
                       <Share2 className="mr-1 h-4 w-4" /> Share
                     </Button>
                   </div>
+                  <Button variant="outline" className="w-full" asChild>
+                    <Link to={ROUTES.compare}>
+                      <GitCompare className="mr-1 h-4 w-4" /> Compare
+                    </Link>
+                  </Button>
                 </div>
                 {v.locationCity && (
                   <p className="inline-flex items-center gap-1 text-sm text-muted-foreground">
@@ -369,7 +376,7 @@ export default function VehicleDetail() {
               </CardContent>
             </Card>
 
-            <EmiCalculator defaultPrice={v.price} compact />
+            {!v.isRateOnRequest && v.price != null && <EmiCalculator defaultPrice={v.price} compact />}
           </div>
         </div>
 
@@ -384,7 +391,15 @@ export default function VehicleDetail() {
         )}
       </div>
 
-      <BuyRequestModal open={buyOpen} onOpenChange={setBuyOpen} vehicle={v} />
+      <div className="fixed bottom-20 left-1/2 z-50 -translate-x-1/2 md:hidden">
+        <Button asChild className="h-12 rounded-full bg-primary px-6 shadow-[0_20px_50px_-20px_rgba(2,6,23,0.45)">
+          <Link to={ROUTES.compare}>
+            <GitCompare className="mr-1 h-4 w-4" /> Compare
+          </Link>
+        </Button>
+      </div>
+
+      <BuyRequestModal open={buyOpen} onOpenChange={setBuyOpen} vehicle={v} requestType={requestType} />
     </>
   );
 }

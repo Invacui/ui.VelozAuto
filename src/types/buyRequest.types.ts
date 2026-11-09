@@ -1,5 +1,7 @@
 import type { VehicleCard } from './vehicle.types';
 
+export type BuyRequestType = 'ENQUIRY' | 'PRICE_DISCLOSURE';
+
 export type BuyRequestStatus =
   | 'NEW'
   | 'CONTACTED'
@@ -40,6 +42,7 @@ export interface BuyRequest {
   email?: string | null;
   city?: string | null;
   budget?: BudgetRange | null;
+  requestType?: BuyRequestType;
   needsFinance?: boolean;
   wantsTestDrive?: boolean;
   testDriveDate?: string | null;
@@ -61,6 +64,7 @@ export interface CreateBuyRequestDto {
   email?: string;
   city?: string;
   budget?: BudgetRange;
+  requestType?: BuyRequestType;
   needsFinance?: boolean;
   wantsTestDrive?: boolean;
   testDriveDate?: string;

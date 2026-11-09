@@ -24,6 +24,7 @@ import {
   listLocations, createLocation, updateLocation, deleteLocation,
   listFeatures, createFeature, updateFeature, deleteFeature,
 } from '@/services/master.service';
+import { Combobox } from '@/components/ui/combobox';
 import { queryKeys } from '@/lib/queryKeys';
 import { VEHICLE_CATEGORIES, CATEGORY_LABELS } from '@/constants/vehicleEnums';
 import { getApiErrorMessage, titleCase } from '@/lib/utils';
@@ -136,17 +137,27 @@ function ModelsTab() {
   const [editing, setEditing] = useState<VehicleModel | null>(null);
   const [open, setOpen] = useState(false);
   const [toDelete, setToDelete] = useState<VehicleModel | null>(null);
-  const [form, setForm] = useState<any>({ brand: '', name: '', category: 'PASSENGER_CAR', bodyTypes: '', fuelOptions: '', transmissionOptions: '', priceMin: '', priceMax: '', isActive: true });
+  const [form, setForm] = useState<any>({ brand: '', name: '', category: 'PASSENGER_CAR', fuelOptions: '', transmissionOptions: '', priceMin: '', priceMax: '', isActive: true });
 
   const { data, isLoading } = useQuery({ queryKey: queryKeys.master.models(), queryFn: () => listModels() });
   const { data: brands } = useQuery({ queryKey: queryKeys.master.brands({ all: true }), queryFn: () => listBrands({ all: true }) });
   const invalidate = () => qc.invalidateQueries({ queryKey: ['master', 'models'] });
 
+  const addBrand = useMutation({
+    mutationFn: (name: string) => createBrand({ name, categories: [form.category || 'PASSENGER_CAR'] }),
+    onSuccess: (brand) => {
+      qc.invalidateQueries({ queryKey: ['master', 'brands'] });
+      setForm((f: any) => ({ ...f, brand: brand._id || brand.id || '' }));
+      toast.success(`Brand "${brand.name}" added`);
+    },
+    onError: (e) => toast.error(getApiErrorMessage(e, 'Could not add brand')),
+  });
+
   const save = useMutation({
     mutationFn: () => {
       const payload: any = {
         brand: form.brand, name: form.name, category: form.category,
-        bodyTypes: splitCsv(form.bodyTypes), fuelOptions: splitCsv(form.fuelOptions),
+        fuelOptions: splitCsv(form.fuelOptions),
         transmissionOptions: splitCsv(form.transmissionOptions),
         priceRange: { min: numOrUndef(form.priceMin), max: numOrUndef(form.priceMax) },
         isActive: form.isActive,
@@ -162,13 +173,13 @@ function ModelsTab() {
     onError: (e) => toast.error(getApiErrorMessage(e, 'Could not delete model')),
   });
 
-  const startNew = () => { setEditing(null); setForm({ brand: '', name: '', category: 'PASSENGER_CAR', bodyTypes: '', fuelOptions: '', transmissionOptions: '', priceMin: '', priceMax: '', isActive: true }); setOpen(true); };
+  const startNew = () => { setEditing(null); setForm({ brand: '', name: '', category: 'PASSENGER_CAR', fuelOptions: '', transmissionOptions: '', priceMin: '', priceMax: '', isActive: true }); setOpen(true); };
   const startEdit = (m: VehicleModel) => {
     setEditing(m);
     setForm({
       brand: typeof m.brand === 'object' ? m.brand.id : m.brand,
       name: m.name, category: m.category,
-      bodyTypes: (m.bodyTypes ?? []).join(', '), fuelOptions: (m.fuelOptions ?? []).join(', '),
+      fuelOptions: (m.fuelOptions ?? []).join(', '),
       transmissionOptions: (m.transmissionOptions ?? []).join(', '),
       priceMin: m.priceRange?.min ?? '', priceMax: m.priceRange?.max ?? '', isActive: m.isActive,
     });
@@ -200,10 +211,15 @@ function ModelsTab() {
           <DialogHeader><DialogTitle>{editing ? 'Edit model' : 'Add model'}</DialogTitle></DialogHeader>
           <div className="space-y-3">
             <div className="space-y-1.5"><Label className="text-xs">Brand</Label>
-              <Select value={form.brand} onValueChange={(v) => setForm({ ...form, brand: v })}>
-                <SelectTrigger><SelectValue placeholder="Select brand" /></SelectTrigger>
-                <SelectContent>{(brands ?? []).map((b) => <SelectItem key={b._id} value={b._id}>{b.name}</SelectItem>)}</SelectContent>
-              </Select>
+              <Combobox
+                value={form.brand}
+                onChange={(v) => setForm({ ...form, brand: v })}
+                onCreate={(name) => { if (name) addBrand.mutate(name); }}
+                options={(brands ?? []).map((b) => ({ value: b._id, label: b.name }))}
+                placeholder="Select brand"
+                searchPlaceholder="Search or add a brand…"
+                emptyText={addBrand.isPending ? 'Adding brand…' : 'No brand found — type to add.'}
+              />
             </div>
             <div className="space-y-1.5"><Label className="text-xs">Name</Label><Input value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} /></div>
             <div className="space-y-1.5"><Label className="text-xs">Category</Label>
@@ -212,7 +228,6 @@ function ModelsTab() {
                 <SelectContent>{VEHICLE_CATEGORIES.map((c) => <SelectItem key={c.value} value={c.value}>{c.label}</SelectItem>)}</SelectContent>
               </Select>
             </div>
-            <div className="space-y-1.5"><Label className="text-xs">Body types (comma separated)</Label><Input value={form.bodyTypes} onChange={(e) => setForm({ ...form, bodyTypes: e.target.value })} /></div>
             <div className="space-y-1.5"><Label className="text-xs">Fuel options (comma separated)</Label><Input value={form.fuelOptions} onChange={(e) => setForm({ ...form, fuelOptions: e.target.value })} /></div>
             <div className="space-y-1.5"><Label className="text-xs">Transmission options (comma separated)</Label><Input value={form.transmissionOptions} onChange={(e) => setForm({ ...form, transmissionOptions: e.target.value })} /></div>
             <div className="grid grid-cols-2 gap-3">

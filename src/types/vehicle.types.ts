@@ -35,7 +35,6 @@ export interface VehicleCard {
   category: VehicleCategory;
   usageType: UsageType;
   subCategory?: string | null;
-  bodyType?: string | null;
   brandName: string;
   model: string;
   variant?: string | null;
@@ -44,9 +43,10 @@ export interface VehicleCard {
   fuelType: string;
   transmission: string;
   ownerCount?: OwnerCount | null;
-  price: number;
+  price: number | null;
+  priceMax?: number | null;
+  isRateOnRequest?: boolean;
   isPriceNegotiable?: boolean;
-  emiStartingFrom?: number | null;
   locationCity?: string | null;
   locationState?: string | null;
   primaryImage?: string | null;
@@ -77,7 +77,6 @@ export interface Vehicle {
   category: VehicleCategory;
   usageType: UsageType;
   subCategory?: string | null;
-  bodyType?: string | null;
   brand?: string;
   brandName: string;
   model: string;
@@ -87,22 +86,20 @@ export interface Vehicle {
 
   fuelType: string;
   transmission: string;
-  bsNorm?: string | null;
   engineCapacityCc?: number | null;
   powerBhp?: number | null;
   torqueNm?: number | null;
   mileageKmpl?: number | null;
   batteryCapacityKwh?: number | null;
-  rangeKm?: number | null;
 
   kmDriven: number;
   ownerCount?: OwnerCount | null;
   seats?: number | null;
-  numberOfKeys?: number | null;
 
-  price: number;
+  price: number | null;
+  priceMax?: number | null;
+  isRateOnRequest?: boolean;
   isPriceNegotiable?: boolean;
-  emiStartingFrom?: number | null;
 
   description?: string | null;
   features?: string[];
@@ -114,24 +111,9 @@ export interface Vehicle {
   isFeatured?: boolean;
   views?: number;
 
-  registrationNumber?: string | null;
-  registrationState?: string | null;
-  rtoCode?: string | null;
-  registrationCity?: string | null;
-  registrationType?: string | null;
-  rcAvailable?: boolean;
-  rcType?: string | null;
-  ownershipTransferStatus?: string | null;
-  roadTax?: string | null;
-  roadTaxValidTill?: string | null;
-  permitType?: string | null;
-  fastagInstalled?: boolean;
-  chassisNumber?: string | null;
-  engineNumber?: string | null;
   accidentHistory?: string | null;
   floodDamage?: boolean;
   serviceHistoryAvailable?: boolean;
-  lastServiceDate?: string | null;
   tyreCondition?: string | null;
   modifications?: string | null;
   isInspected?: boolean;
@@ -147,15 +129,12 @@ export interface Vehicle {
   axleConfiguration?: string | null;
   numberOfTyres?: number | null;
   wheelbaseMm?: number | null;
-  bodyLengthFt?: number | null;
-  cabinType?: string | null;
   tankCapacityLitres?: number | null;
   seatingCapacity?: number | null;
   tipperCapacityCubicM?: number | null;
   hasAc?: boolean;
   hasGpsTelematics?: boolean;
 
-  sleepingCapacity?: number | null;
   hasKitchenette?: boolean;
   hasToilet?: boolean;
   hasGenerator?: boolean;
@@ -165,9 +144,6 @@ export interface Vehicle {
   buildType?: string | null;
   rtoModificationApproved?: boolean;
   rtoModificationDetails?: string | null;
-  lengthFt?: number | null;
-  widthFt?: number | null;
-  heightFt?: number | null;
 
   locationState?: string | null;
   locationCity?: string | null;
@@ -183,7 +159,6 @@ export interface VehicleFiltersMeta {
   brands: { id: string; name: string; categories?: string[] }[];
   fuelTypes: string[];
   transmissions: string[];
-  bodyTypes: string[];
   categories: string[];
   subCategories: string[];
   states: string[];
@@ -197,8 +172,7 @@ export interface VehicleListParams {
   q?: string;
   category?: VehicleCategory;
   usageType?: UsageType;
-  subCategory?: string;
-  bodyType?: string;
+  subCategory?: string | null;
   brand?: string;
   model?: string;
   fuelType?: string;
@@ -206,7 +180,6 @@ export interface VehicleListParams {
   ownerCount?: OwnerCount;
   state?: string;
   city?: string;
-  bsNorm?: string;
   minPrice?: number;
   maxPrice?: number;
   minYear?: number;

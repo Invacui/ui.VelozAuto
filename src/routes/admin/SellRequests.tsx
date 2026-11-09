@@ -240,7 +240,7 @@ export default function AdminSellRequests() {
                         <span>{titleCase(active.fuelType)}</span>
                         <span>{titleCase(active.transmission)}</span>
                         <span>{titleCase(active.registrationState)}</span>
-                        <span>{active.registrationNumber || 'No reg.'}</span>
+                        <span>{active.registrationCity || active.registrationState || '—'}</span>
                         <span>Insurance: {titleCase(active.insuranceType)}</span>
                         <span>Loan: {titleCase(active.loanStatus)}</span>
                         <span>Accident: {titleCase(active.accidentHistory)}</span>

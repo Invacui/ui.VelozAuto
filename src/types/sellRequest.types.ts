@@ -44,7 +44,6 @@ export interface SellRequest {
   category?: string | null;
   usageType?: string | null;
   subCategory?: string | null;
-  bodyType?: string | null;
   brand?: string | { id: string; name: string } | null;
   brandName?: string;
   model?: string | null;
@@ -54,14 +53,12 @@ export interface SellRequest {
   color?: string | null;
   fuelType?: string | null;
   transmission?: string | null;
-  bsNorm?: string | null;
   engineCapacityCc?: number | null;
   powerBhp?: number | null;
   kmDriven?: number | null;
   condition?: string | null;
   ownerCount?: string | null;
   seats?: number | null;
-  registrationNumber?: string | null;
   registrationState?: string | null;
   rtoCode?: string | null;
   registrationCity?: string | null;
@@ -79,7 +76,6 @@ export interface SellRequest {
   payloadCapacityKg?: number | null;
   axleConfiguration?: string | null;
   numberOfTyres?: number | null;
-  sleepingCapacity?: number | null;
   hasKitchenette?: boolean;
   hasToilet?: boolean;
   description?: string | null;
@@ -110,7 +106,6 @@ export interface CreateSellRequestDto {
   category?: string;
   usageType?: string;
   subCategory?: string;
-  bodyType?: string;
   brand?: string;
   brandName?: string;
   model?: string;
@@ -120,14 +115,12 @@ export interface CreateSellRequestDto {
   color?: string;
   fuelType?: string;
   transmission?: string;
-  bsNorm?: string;
   engineCapacityCc?: number;
   powerBhp?: number;
   kmDriven?: number;
   condition?: string;
   ownerCount?: string;
   seats?: number;
-  registrationNumber?: string;
   registrationState?: string;
   rtoCode?: string;
   registrationCity?: string;
@@ -145,7 +138,6 @@ export interface CreateSellRequestDto {
   payloadCapacityKg?: number;
   axleConfiguration?: string;
   numberOfTyres?: number;
-  sleepingCapacity?: number;
   hasKitchenette?: boolean;
   hasToilet?: boolean;
   description?: string;

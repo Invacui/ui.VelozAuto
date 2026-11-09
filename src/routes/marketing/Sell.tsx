@@ -19,7 +19,7 @@ import { SEO } from '@/components/common/SEO';
 import { MediaUpload, type MediaItem } from '@/components/common/MediaUpload';
 import { createSellRequest } from '@/services/sellRequest.service';
 import { uploadImages } from '@/services/upload.service';
-import { listBrands } from '@/services/master.service';
+import { listBrands, createBrand } from '@/services/master.service';
 import { queryKeys } from '@/lib/queryKeys';
 import { useAuth } from '@/hooks/useAuth';
 import { ROUTES } from '@/constants/routes';
@@ -79,6 +79,9 @@ export default function Sell() {
   const brandOptions = liveBrands.length > 0
     ? liveBrands
     : FALLBACK_MAKES.map((name) => ({ id: '', name }));
+  const { mutateAsync: addBrand } = useMutation({
+    mutationFn: (name: string) => createBrand({ name, categories: ['PASSENGER_CAR'] }),
+  });
 
   const {
     register, handleSubmit, setValue, watch, formState: { errors },
@@ -225,10 +228,20 @@ export default function Sell() {
                           const b = brandOptions.find((x) => x.name === v);
                           setValue('brand', b?.id || '');
                         }}
+                        onCreate={async (name) => {
+                          if (!name) return;
+                          try {
+                            const brand = await addBrand(name);
+                            setValue('brandName', brand.name, { shouldValidate: true });
+                            setValue('brand', brand._id || brand.id || '');
+                          } catch (err) {
+                            toast.error(getApiErrorMessage(err, 'Could not add the brand'));
+                          }
+                        }}
                         options={brandOptions.map((b) => ({ value: b.name, label: b.name }))}
                         placeholder="Select make"
-                        searchPlaceholder="Search make…"
-                        emptyText="No make found."
+                        searchPlaceholder="Search or add a make…"
+                        emptyText="No make found — type to add."
                       />
                     )}
                   </Field>
