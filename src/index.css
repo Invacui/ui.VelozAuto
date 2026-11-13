@@ -51,6 +51,9 @@
     @apply font-semibold tracking-tight;
   }
 }
+.bc{
+  border: 1px solid red;
+}
 
 @layer components {
   .marquee-logos {

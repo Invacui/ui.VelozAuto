@@ -115,14 +115,21 @@ export function CategoryShowcase() {
         containerH = container.clientHeight;
         cardH = list[0].offsetHeight;
         step = cardH + 84;
-        setters = list.map((c) => ({
-          x: gsap.quickSetter(c, "x", "px") as (v: number) => void,
-          y: gsap.quickSetter(c, "y", "px") as (v: number) => void,
-          rotate: gsap.quickSetter(c, "rotate", "deg") as (v: number) => void,
-          scale: gsap.quickSetter(c, "scale") as (v: number) => void,
-          opacity: gsap.quickSetter(c, "opacity") as (v: number) => void,
-          z: gsap.quickSetter(c, "zIndex") as (v: number) => void,
-        }));
+        setters = list.map((c) => {
+          const scaleX = gsap.quickSetter(c, "scaleX") as (v: number) => void;
+          const scaleY = gsap.quickSetter(c, "scaleY") as (v: number) => void;
+          return {
+            x: gsap.quickSetter(c, "x", "px") as (v: number) => void,
+            y: gsap.quickSetter(c, "y", "px") as (v: number) => void,
+            rotate: gsap.quickSetter(c, "rotate", "deg") as (v: number) => void,
+            scale: (v: number) => {
+              scaleX(v);
+              scaleY(v);
+            },
+            opacity: gsap.quickSetter(c, "opacity") as (v: number) => void,
+            z: gsap.quickSetter(c, "zIndex") as (v: number) => void,
+          };
+        });
         return list;
       };
 

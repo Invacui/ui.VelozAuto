@@ -147,7 +147,7 @@ export function HeroSection() {
             width={710}
             height={421}
             loading="eager"
-            fetchPriority="high"
+            {...{ fetchpriority: 'high' }}
             decoding="async"
             className="z-30 mx-auto size-[92%] will-change-transform lg:size-[70%]"
           />
